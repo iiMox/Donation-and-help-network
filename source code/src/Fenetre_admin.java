@@ -1,58 +1,26 @@
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.Toolkit;
+import java.awt.*;
+import javax.swing.*;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 
-import java.awt.Color;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
+public class Fenetre_admin extends JFrame {
 
-public class Fenetre_admin {
-
-	private JFrame frmFentreAdministrateur;
+	private JPanel contentPane;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Fenetre_admin window = new Fenetre_admin();
-					window.frmFentreAdministrateur.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the application.
+	 * Create the frame.
 	 */
 	public Fenetre_admin() {
-		initialize();
-	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frmFentreAdministrateur = new JFrame();
-		frmFentreAdministrateur.setTitle("Fen\u00EAtre administrateur");
-		frmFentreAdministrateur.getContentPane().setBackground(Color.WHITE);
-		frmFentreAdministrateur.getContentPane().setLayout(null);
+		setTitle("Fen\u00EAtre administrateur");
+		getContentPane().setBackground(Color.WHITE);
+		getContentPane().setLayout(null);
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.decode("#1dbf73"));
 		panel.setBounds(1, 1, 290, 727);
-		frmFentreAdministrateur.getContentPane().add(panel);
-		frmFentreAdministrateur.setIconImage(Toolkit.getDefaultToolkit().getImage(Fenetre_user.class.getResource("/images/login_icon.png")));
-		frmFentreAdministrateur.setBounds(100, 100, 1024, 768);
-		frmFentreAdministrateur.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		getContentPane().add(panel);
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Fenetre_user.class.getResource("/images/login_icon.png")));
+		setBounds(100, 100, 1024, 768);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		panel.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("Logo");
@@ -95,31 +63,31 @@ public class Fenetre_admin {
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(Color.decode("#c0c0c0"));
 		panel_1.setBounds(291, 0, 1, 729);
-		frmFentreAdministrateur.getContentPane().add(panel_1);
+		getContentPane().add(panel_1);
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBackground(Color.decode("#c0c0c0"));
 		panel_2.setBounds(0, 0, 1008, 1);
-		frmFentreAdministrateur.getContentPane().add(panel_2);
+		getContentPane().add(panel_2);
 		
 		JPanel panel_1_1 = new JPanel();
 		panel_1_1.setBackground(Color.decode("#c0c0c0"));
 		panel_1_1.setBounds(1007, 0, 1, 729);
-		frmFentreAdministrateur.getContentPane().add(panel_1_1);
+		getContentPane().add(panel_1_1);
 		
 		JPanel panel_2_1 = new JPanel();
 		panel_2_1.setBackground(Color.decode("#c0c0c0"));
 		panel_2_1.setBounds(0, 728, 1008, 1);
-		frmFentreAdministrateur.getContentPane().add(panel_2_1);
+		getContentPane().add(panel_2_1);
 		
 		JPanel panel_1_2 = new JPanel();
 		panel_1_2.setBackground(Color.decode("#c0c0c0"));
 		panel_1_2.setBounds(0, 0, 1, 729);
-		frmFentreAdministrateur.getContentPane().add(panel_1_2);
+		getContentPane().add(panel_1_2);
 		
 		/* To center window in the middle*/
 		
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		frmFentreAdministrateur.setLocation(dim.width/2-frmFentreAdministrateur.getSize().width/2, dim.height/2-frmFentreAdministrateur.getSize().height/2);
+		setLocation(dim.width/2-getSize().width/2, dim.height/2-getSize().height/2);
 	}
 }

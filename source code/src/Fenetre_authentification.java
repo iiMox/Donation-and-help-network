@@ -6,17 +6,9 @@ import javax.swing.*;
 
 
 import java.awt.Color;
-import javax.swing.JTextField;
-
-
-import javax.swing.JButton;
 import java.awt.*;
 
 import java.io.*;
-
-import javax.swing.SwingConstants;
-
-
 import java.awt.Font;
 import java.awt.Toolkit;
 
@@ -26,10 +18,10 @@ public class Fenetre_authentification {
 
 	private JFrame frmLogin;
 	private JTextField username_field;
-	private JTextField password_field;
+	private JPasswordField password_field;
 	private JTextField textField;
 	private JTextField txtEmail;
-	private JTextField textField_2;
+	private JPasswordField textField_2;
 	private JPanel connexion_panel,creer_panel;
 
 	/**
@@ -113,7 +105,8 @@ public class Fenetre_authentification {
 		        BorderFactory.createEmptyBorder(10, 20, 10, 5)));
 		
 		
-		password_field = new JTextField();
+		password_field = new JPasswordField();
+		password_field.setEchoChar((char)0);
 		password_field.setFont(new Font("Open Sans", Font.PLAIN, 12));
 		password_field.setText("Mot de passe");
 		password_field.setForeground(Color.GRAY);
@@ -131,6 +124,7 @@ public class Fenetre_authentification {
 				if (password_field.getText().equals("Mot de passe")) {
 					password_field.setText("");
 					password_field.setForeground(Color.BLACK);
+					password_field.setEchoChar('*');
 		        }
 			}
 			@Override
@@ -138,6 +132,7 @@ public class Fenetre_authentification {
 				if (password_field.getText().isEmpty()) {
 					password_field.setForeground(Color.GRAY);
 					password_field.setText("Mot de passe");
+					password_field.setEchoChar((char)0);
 		        }
 			}
 		});
@@ -149,6 +144,24 @@ public class Fenetre_authentification {
 		        BorderFactory.createEmptyBorder(10, 20, 10, 5)));
 		
 		JButton btnNewButton = new JButton("Connexion");
+		btnNewButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				User user = new User();
+				user.setUsername(username_field.getText());
+				user.setPassword(password_field.getText());
+				user.userExiste();
+				if(user.getType().equals("admin")) {
+					Fenetre_admin fa = new Fenetre_admin();
+					fa.setVisible(true);
+					frmLogin.setVisible(false);
+				}else if(user.getType().equals("user")) {
+					Fenetre_user fu = new Fenetre_user(user.getId());
+					fu.setVisible(true);
+					frmLogin.setVisible(false);
+				}
+			}
+		});
 		btnNewButton.setFont(new Font("Open Sans", Font.BOLD, 12));
 		btnNewButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnNewButton.setBounds(5, 259, 120, 35);
@@ -249,8 +262,9 @@ public class Fenetre_authentification {
 			}
 		});
 		
-		textField_2 = new JTextField();
+		textField_2 = new JPasswordField();
 		textField_2.setText("Mot de passe");
+		textField_2.setEchoChar((char)0);
 		textField_2.setForeground(Color.GRAY);
 		textField_2.setFont(new Font("Open Sans", Font.PLAIN, 12));
 		textField_2.setColumns(10);
@@ -267,6 +281,7 @@ public class Fenetre_authentification {
 				if (textField_2.getText().equals("Mot de passe")) {
 					textField_2.setText("");
 					textField_2.setForeground(Color.BLACK);
+					textField_2.setEchoChar('*');
 		        }
 			}
 			@Override
@@ -274,6 +289,7 @@ public class Fenetre_authentification {
 				if (textField_2.getText().isEmpty()) {
 					textField_2.setForeground(Color.GRAY);
 					textField_2.setText("Mot de passe");
+					textField_2.setEchoChar((char)0);
 		        }
 			}
 		});
@@ -286,6 +302,20 @@ public class Fenetre_authentification {
 		creer_panel.add(lblNewLabel_2);
 		
 		JButton btnCreerUnCompte_1 = new JButton("Cr\u00E9er un compte");
+		btnCreerUnCompte_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				User user_add = new User();
+				user_add.setUsername(textField.getText());
+				user_add.setPassword(textField_2.getText());
+				user_add.setEmail(txtEmail.getText());
+				user_add.setType("user");
+				user_add.ajout_user();
+				connexion_panel.setVisible(true);
+				creer_panel.setVisible(false);
+				
+			}
+		});
 		btnCreerUnCompte_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnCreerUnCompte_1.setFont(new Font("Open Sans", Font.BOLD, 12));
 		btnCreerUnCompte_1.setBorder(BorderFactory.createLineBorder(Color.decode("#666")));
