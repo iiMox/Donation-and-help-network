@@ -122,6 +122,7 @@ public class User {
 			if(oc.rs.next()) {
 				return oc.rs.getInt("id");
 			}
+			oc.con.close();
 		}catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Erreur de connexion à la base de données");
 		}
@@ -138,6 +139,7 @@ public class User {
 			if(oc.rs.next()) {
 				return true;
 			}
+			oc.con.close();
 		}catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Erreur de connexion à la base de données");
 		}
@@ -161,6 +163,7 @@ public class User {
 				this.wilaya=oc.rs.getString("wilaya");
 				this.tel=oc.rs.getInt("tel");
 			}
+			oc.con.close();
 		}catch (SQLException e) {
 			JOptionPane.showMessageDialog(null, "Erreur de connexion à la base de données");
 		}
@@ -182,6 +185,7 @@ public class User {
 				if(oc.rs.next()) {
 					JOptionPane.showMessageDialog(null, "Utilisateur bien ajouté");
 				}
+				oc.con.close();
 			}catch (SQLException e) {
 				JOptionPane.showMessageDialog(null, "Erreur de connexion à la base de données");
 			}
@@ -201,6 +205,7 @@ public class User {
 			}else {
 				JOptionPane.showMessageDialog(null, "Nom d'utilisateur ou mot de passe incorrecte", "Alert ", JOptionPane.INFORMATION_MESSAGE);
 			}
+			oc.con.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(null, "Erreur de connexion à la base de données");
@@ -224,6 +229,7 @@ public class User {
 			oc.stmt.setInt(7, this.getId());
 			oc.rs = oc.stmt.executeQuery();
 			JOptionPane.showMessageDialog(null, "Opération a bien effectué ");
+			oc.con.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(null, "Erreur de connexion à la base de données");

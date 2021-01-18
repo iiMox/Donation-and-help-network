@@ -3,11 +3,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Vector;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.event.ActionEvent;
+import javax.swing.border.CompoundBorder;
 
 public class Fenetre_user extends JFrame {
 
@@ -21,6 +23,8 @@ public class Fenetre_user extends JFrame {
 	private JTextField profil_adresse;
 	private JTextField profil_wilaya;
 	private JTextField profil_tel;
+	private JScrollPane scrollPane,scrollPane_jobs; 
+	private JPanel scrollPanel,scrollPanel_jobs;
 
 	/**
 	 * Create the frame.
@@ -29,6 +33,12 @@ public class Fenetre_user extends JFrame {
 		User user = new User();
 		user.getUserById(ID);
 		
+		scrollPanel = new JPanel();
+		scrollPanel_jobs = new JPanel();
+		
+        scrollPane = new JScrollPane(scrollPanel);
+        scrollPane_jobs = new JScrollPane(scrollPanel_jobs);
+        
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -80,6 +90,8 @@ public class Fenetre_user extends JFrame {
 				jobs_container.setVisible(false);
 				stats_container.setVisible(false);
 				profil_container.setVisible(false);
+				scrollPane.setVisible(false);
+				scrollPane_jobs.setVisible(false);
 			}
 		});
 		panel_accueil.setBackground(new Color(29, 191, 115, 0));
@@ -128,6 +140,8 @@ public class Fenetre_user extends JFrame {
 				jobs_container.setVisible(false);
 				stats_container.setVisible(false);
 				profil_container.setVisible(false);
+				scrollPane.setVisible(true);
+				scrollPane_jobs.setVisible(false);
 			}
 		});
 		
@@ -171,6 +185,8 @@ public class Fenetre_user extends JFrame {
 				jobs_container.setVisible(true);
 				stats_container.setVisible(false);
 				profil_container.setVisible(false);
+				scrollPane.setVisible(false);
+				scrollPane_jobs.setVisible(true);
 			}
 		});
 		
@@ -214,6 +230,8 @@ public class Fenetre_user extends JFrame {
 				jobs_container.setVisible(false);
 				stats_container.setVisible(true);
 				profil_container.setVisible(false);
+				scrollPane.setVisible(false);
+				scrollPane_jobs.setVisible(false);
 			}
 		});
 		
@@ -251,6 +269,8 @@ public class Fenetre_user extends JFrame {
 				jobs_container.setVisible(false);
 				stats_container.setVisible(false);
 				profil_container.setVisible(true);
+				scrollPane.setVisible(false);
+				scrollPane_jobs.setVisible(false);
 			}
 		});
 		panel_profile.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -376,7 +396,7 @@ public class Fenetre_user extends JFrame {
 		getContentPane().add(panel_containers);
 		panel_containers.setLayout(null);
 		
-		/*accueil_container = new JPanel();
+		accueil_container = new JPanel();
 		accueil_container.setBounds(0, 0, 715, 727);
 		panel_containers.add(accueil_container);
 		accueil_container.setLayout(null);
@@ -388,7 +408,7 @@ public class Fenetre_user extends JFrame {
 		accueil_container.add(accueil_panel_3);
 		accueil_panel_3.setLayout(null);
 		
-		JLabel accueil_lblNewLabel_7 = new JLabel("Accueil");
+		JLabel accueil_lblNewLabel_7 = new JLabel("ACCUEIL");
 		accueil_lblNewLabel_7.setHorizontalAlignment(SwingConstants.CENTER);
 		accueil_lblNewLabel_7.setFont(new Font("Open Sans", Font.BOLD, 25));
 		accueil_lblNewLabel_7.setBackground(Color.WHITE);
@@ -626,7 +646,7 @@ public class Fenetre_user extends JFrame {
 		accueil_offres_voirplus.setBorder(null);
 		accueil_offres_voirplus.setBackground(new Color(29, 191, 115));
 		accueil_offres_voirplus.setBounds(559, 612, 125, 35);
-		accueil_container.add(accueil_offres_voirplus);*/
+		accueil_container.add(accueil_offres_voirplus);
 		
 		dons_container = new JPanel();
 		dons_container.setBounds(0, 0, 715, 727);
@@ -634,29 +654,350 @@ public class Fenetre_user extends JFrame {
 		dons_container.setLayout(null);
 		
 		JPanel dons_panel_3 = new JPanel();
+		dons_panel_3.setBounds(30, 30, 654, 80);
 		dons_panel_3.setBorder(UIManager.getBorder("TextField.border"));
 		dons_panel_3.setBackground(Color.WHITE);
-		dons_panel_3.setBounds(30, 30, 654, 80);
 		dons_container.add(dons_panel_3);
 		dons_panel_3.setLayout(null);
 		
-		JLabel dons_lblNewLabel_7 = new JLabel("Les postes des dons");
+		JLabel dons_lblNewLabel_7 = new JLabel("LES POSTES DE DON");
 		dons_lblNewLabel_7.setHorizontalAlignment(SwingConstants.CENTER);
 		dons_lblNewLabel_7.setFont(new Font("Open Sans", Font.BOLD, 25));
 		dons_lblNewLabel_7.setBounds(177, 20, 300, 40);
 		dons_panel_3.add(dons_lblNewLabel_7);
 		
-		/*jobs_container = new JPanel();
+		
+		scrollPanel.setBackground(Color.WHITE);
+		GridLayout gl_scrollPanel = new GridLayout();
+		gl_scrollPanel.setColumns(1);
+		gl_scrollPanel.setHgap(20);
+		gl_scrollPanel.setVgap(20);
+		gl_scrollPanel.setRows(0);
+		scrollPanel.setLayout(gl_scrollPanel);
+		scrollPanel.setBorder(new CompoundBorder(null, new EmptyBorder(20, 20, 20, 20)));
+        scrollPanel.setSize(new Dimension(300, 300));       
+        scrollPane.setVisible(false);
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setSize(654, 500);
+        scrollPane.setLocation(30, 150);
+        
+        Vector<Integer> v =new Vector<Integer>();
+        OracleConnection oc = new OracleConnection();
+        oc.initialize();
+        try {
+        	oc.stmt = oc.con.prepareStatement("Select * From Dons Where Etat='accepter'");
+        	oc.rs = oc.stmt.executeQuery();
+        	while(oc.rs.next()) {
+        		v.add(oc.rs.getInt("code"));
+        	}
+        	oc.con.close();
+        } catch(Exception e) {
+        	JOptionPane.showMessageDialog(null, "Erreur de connexion à la base de données");
+        }
+        
+        for(int i=0; i<v.size(); i++) {
+        	scrollPanel.add(new PosteDon(v.get(i)));
+        }
+        
+        dons_container.add(scrollPane);
+        
+        JButton mes_demandes_btn = new JButton("Mes postes des dons");
+        mes_demandes_btn.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        	}
+        });
+        mes_demandes_btn.setBackground(Color.decode("#4b6584"));
+        mes_demandes_btn.setBorder(null);
+        mes_demandes_btn.setForeground(Color.WHITE);
+        mes_demandes_btn.setFont(new Font("Open Sans", Font.BOLD, 14));
+        mes_demandes_btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        mes_demandes_btn.setBounds(30, 670, 200, 40);
+        dons_container.add(mes_demandes_btn);
+        
+        JButton ajout_poste_btn = new JButton("Ajouter un poste");
+        ajout_poste_btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        ajout_poste_btn.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        	}
+        });
+        ajout_poste_btn.setBackground(new Color(29,191,115));
+        ajout_poste_btn.setForeground(Color.WHITE);
+        ajout_poste_btn.setFont(new Font("Open Sans", Font.BOLD, 14));
+        ajout_poste_btn.setBorder(null);
+        ajout_poste_btn.setBounds(484, 670, 200, 40);
+        dons_container.add(ajout_poste_btn);
+		
+		jobs_container = new JPanel();
 		jobs_container.setBounds(0, 0, 715, 727);
 		panel_containers.add(jobs_container);
 		jobs_container.setLayout(null);
 		
+		JPanel jobs_panel_3 = new JPanel();
+		jobs_panel_3.setBounds(30, 30, 654, 80);
+		jobs_panel_3.setBorder(UIManager.getBorder("TextField.border"));
+		jobs_panel_3.setBackground(Color.WHITE);
+		jobs_container.add(jobs_panel_3);
+		jobs_panel_3.setLayout(null);
+		
+		JLabel jobs_lblNewLabel_7 = new JLabel("LES OFFRES D'EMPLOI");
+		jobs_lblNewLabel_7.setHorizontalAlignment(SwingConstants.CENTER);
+		jobs_lblNewLabel_7.setFont(new Font("Open Sans", Font.BOLD, 25));
+		jobs_lblNewLabel_7.setBounds(177, 20, 300, 40);
+		jobs_panel_3.add(jobs_lblNewLabel_7);
+		
+		
+		GridLayout gl_scrollPanel_jobs = new GridLayout();
+		gl_scrollPanel_jobs.setColumns(1);
+		gl_scrollPanel_jobs.setHgap(20);
+		gl_scrollPanel_jobs.setVgap(20);
+		gl_scrollPanel_jobs.setRows(0);
+		scrollPanel_jobs.setLayout(gl_scrollPanel_jobs);
+		scrollPanel_jobs.setBackground(Color.WHITE);
+		scrollPanel_jobs.setBorder(new CompoundBorder(null, new EmptyBorder(20, 20, 20, 20)));
+		scrollPanel_jobs.setSize(new Dimension(300, 300));       
+		scrollPane_jobs.setVisible(false);
+        scrollPane_jobs.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane_jobs.setSize(654, 500);
+        scrollPane_jobs.setLocation(30, 150);
+        
+        Vector<Integer> v_jobs =new Vector<Integer>();
+        try {
+        	oc.stmt = oc.con.prepareStatement("Select * From Dons Where Etat='accepter'");
+        	oc.rs = oc.stmt.executeQuery();
+        	while(oc.rs.next()) {
+        		v_jobs.add(oc.rs.getInt("code"));
+        	}
+        	oc.con.close();
+        } catch(Exception e) {
+        	JOptionPane.showMessageDialog(null, "Erreur de connexion à la base de données");
+        }
+        
+        for(int j=0; j<v_jobs.size(); j++) {
+        	scrollPane_jobs.add(new PosteDon(v_jobs.get(j)));
+        }
+        
+        jobs_container.add(scrollPane_jobs);
+        
+        JButton mes_offres_btn = new JButton("Mes offres d'emploi");
+        mes_offres_btn.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        	}
+        });
+        mes_offres_btn.setBackground(Color.decode("#4b6584"));
+        mes_offres_btn.setBorder(null);
+        mes_offres_btn.setForeground(Color.WHITE);
+        mes_offres_btn.setFont(new Font("Open Sans", Font.BOLD, 14));
+        mes_offres_btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        mes_offres_btn.setBounds(30, 670, 200, 40);
+        jobs_container.add(mes_offres_btn);
+        
+        JButton ajout_offre_btn = new JButton("Ajouter un offre");
+        ajout_offre_btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        ajout_offre_btn.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent e) {
+        	}
+        });
+        ajout_offre_btn.setBackground(new Color(29,191,115));
+        ajout_offre_btn.setForeground(Color.WHITE);
+        ajout_offre_btn.setFont(new Font("Open Sans", Font.BOLD, 14));
+        ajout_offre_btn.setBorder(null);
+        ajout_offre_btn.setBounds(484, 670, 200, 40);
+        jobs_container.add(ajout_offre_btn);
+		
 		stats_container = new JPanel();
 		stats_container.setBounds(0, 0, 715, 727);
 		panel_containers.add(stats_container);
-		stats_container.setLayout(null);*/
+		stats_container.setLayout(null);
 		
-		/*profil_container = new JPanel();
+		JPanel stats_panel_3 = new JPanel();
+		stats_panel_3.setBounds(30, 30, 654, 80);
+		stats_panel_3.setBorder(UIManager.getBorder("TextField.border"));
+		stats_panel_3.setBackground(Color.WHITE);
+		stats_container.add(stats_panel_3);
+		stats_panel_3.setLayout(null);
+		
+		JLabel stats_lblNewLabel_7 = new JLabel("STATISTIQUES");
+		stats_lblNewLabel_7.setHorizontalAlignment(SwingConstants.CENTER);
+		stats_lblNewLabel_7.setFont(new Font("Open Sans", Font.BOLD, 25));
+		stats_lblNewLabel_7.setBounds(177, 20, 300, 40);
+		stats_panel_3.add(stats_lblNewLabel_7);
+		
+		JLabel lblNewLabel_7 = new JLabel("Interval :");
+		lblNewLabel_7.setFont(new Font("Open Sans", Font.BOLD, 14));
+		lblNewLabel_7.setBounds(30, 157, 70, 20);
+		stats_container.add(lblNewLabel_7);
+		
+		String groupes[] = {"Aujourd'hui","7 Jours","Dernier Mois","1 AN","Tous"};
+		
+		JComboBox intervall = new JComboBox(groupes);
+		intervall.setFont(new Font("Open Sans", Font.PLAIN, 13));
+		intervall.setBackground(Color.WHITE);
+		intervall.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		intervall.setBorder(null);
+		intervall.setBounds(98, 157, 120, 20);
+		stats_container.add(intervall);
+		
+		JPanel stat_containe1 = new JPanel();
+		stat_containe1.setBorder(UIManager.getBorder("TextField.border"));
+		stat_containe1.setBackground(Color.WHITE);
+		stat_containe1.setBounds(30, 225, 211, 200);
+		stats_container.add(stat_containe1);
+		stat_containe1.setLayout(null);
+		
+		JLabel stat1_title = new JLabel("Statistique 1");
+		stat1_title.setForeground(Color.BLACK);
+		stat1_title.setFont(new Font("Open Sans", Font.BOLD, 16));
+		stat1_title.setHorizontalAlignment(SwingConstants.CENTER);
+		stat1_title.setBounds(45, 20, 121, 20);
+		stat_containe1.add(stat1_title);
+		
+		JLabel stat1_icon = new JLabel(new ImageIcon(Fenetre_user.class.getResource("/images/login_icon.png")));
+		stat1_icon.setLocation(44, 90);
+		stat1_icon.setSize(32, 32);
+		stat_containe1.add(stat1_icon);
+		
+		JLabel stat1_number = new JLabel("50");
+		stat1_number.setForeground(Color.BLACK);
+		stat1_number.setHorizontalAlignment(SwingConstants.CENTER);
+		stat1_number.setFont(new Font("Open Sans", Font.BOLD, 55));
+		stat1_number.setBounds(78, 56, 90, 100);
+		stat_containe1.add(stat1_number);
+		
+		JPanel stat_containe2 = new JPanel();
+		stat_containe2.setLayout(null);
+		stat_containe2.setBorder(UIManager.getBorder("TextField.border"));
+		stat_containe2.setBackground(Color.WHITE);
+		stat_containe2.setBounds(251, 225, 211, 200);
+		stats_container.add(stat_containe2);
+		
+		JLabel stat2_title = new JLabel("Statistique 1");
+		stat2_title.setForeground(Color.BLACK);
+		stat2_title.setHorizontalAlignment(SwingConstants.CENTER);
+		stat2_title.setFont(new Font("Open Sans", Font.BOLD, 16));
+		stat2_title.setBounds(45, 20, 121, 20);
+		stat_containe2.add(stat2_title);
+		
+		JLabel stat2_icon = new JLabel(new ImageIcon(Fenetre_user.class.getResource("/images/login_icon.png")));
+		stat2_icon.setBounds(44, 90, 32, 32);
+		stat_containe2.add(stat2_icon);
+		
+		JLabel stat2_number = new JLabel("50");
+		stat2_number.setForeground(Color.BLACK);
+		stat2_number.setHorizontalAlignment(SwingConstants.CENTER);
+		stat2_number.setFont(new Font("Open Sans", Font.BOLD, 55));
+		stat2_number.setBounds(78, 56, 90, 100);
+		stat_containe2.add(stat2_number);
+		
+		JPanel stat_containe3 = new JPanel();
+		stat_containe3.setLayout(null);
+		stat_containe3.setBorder(UIManager.getBorder("TextField.border"));
+		stat_containe3.setBackground(Color.WHITE);
+		stat_containe3.setBounds(473, 225, 211, 200);
+		stats_container.add(stat_containe3);
+		
+		JLabel stat3_title = new JLabel("Statistique 1");
+		stat3_title.setForeground(Color.BLACK);
+		stat3_title.setHorizontalAlignment(SwingConstants.CENTER);
+		stat3_title.setFont(new Font("Open Sans", Font.BOLD, 16));
+		stat3_title.setBounds(45, 20, 121, 20);
+		stat_containe3.add(stat3_title);
+		
+		JLabel stat3_icon = new JLabel(new ImageIcon(Fenetre_user.class.getResource("/images/login_icon.png")));
+		stat3_icon.setBounds(44, 90, 32, 32);
+		stat_containe3.add(stat3_icon);
+		
+		JLabel stat3_number = new JLabel("50");
+		stat3_number.setForeground(Color.BLACK);
+		stat3_number.setHorizontalAlignment(SwingConstants.CENTER);
+		stat3_number.setFont(new Font("Open Sans", Font.BOLD, 55));
+		stat3_number.setBounds(78, 56, 90, 100);
+		stat_containe3.add(stat3_number);
+		
+		JPanel stat_containe4 = new JPanel();
+		stat_containe4.setLayout(null);
+		stat_containe4.setBorder(UIManager.getBorder("TextField.border"));
+		stat_containe4.setBackground(Color.WHITE);
+		stat_containe4.setBounds(30, 475, 211, 200);
+		stats_container.add(stat_containe4);
+		
+		JLabel stat4_title = new JLabel("Statistique 1");
+		stat4_title.setForeground(Color.BLACK);
+		stat4_title.setHorizontalAlignment(SwingConstants.CENTER);
+		stat4_title.setFont(new Font("Open Sans", Font.BOLD, 16));
+		stat4_title.setBounds(45, 20, 121, 20);
+		stat_containe4.add(stat4_title);
+		
+		JLabel stat4_icon = new JLabel(new ImageIcon(Fenetre_user.class.getResource("/images/login_icon.png")));
+		stat4_icon.setBounds(44, 90, 32, 32);
+		stat_containe4.add(stat4_icon);
+		
+		JLabel stat4_number = new JLabel("50");
+		stat4_number.setForeground(Color.BLACK);
+		stat4_number.setHorizontalAlignment(SwingConstants.CENTER);
+		stat4_number.setFont(new Font("Open Sans", Font.BOLD, 55));
+		stat4_number.setBounds(78, 56, 90, 100);
+		stat_containe4.add(stat4_number);
+		
+		JPanel stat_containe5 = new JPanel();
+		stat_containe5.setLayout(null);
+		stat_containe5.setBorder(UIManager.getBorder("TextField.border"));
+		stat_containe5.setBackground(Color.WHITE);
+		stat_containe5.setBounds(251, 475, 211, 200);
+		stats_container.add(stat_containe5);
+		
+		JLabel stat5_title = new JLabel("Statistique 1");
+		stat5_title.setForeground(Color.BLACK);
+		stat5_title.setHorizontalAlignment(SwingConstants.CENTER);
+		stat5_title.setFont(new Font("Open Sans", Font.BOLD, 16));
+		stat5_title.setBounds(45, 20, 121, 20);
+		stat_containe5.add(stat5_title);
+		
+		JLabel stat5_icon = new JLabel(new ImageIcon(Fenetre_user.class.getResource("/images/login_icon.png")));
+		stat5_icon.setBounds(44, 90, 32, 32);
+		stat_containe5.add(stat5_icon);
+		
+		JLabel stat5_number = new JLabel("50");
+		stat5_number.setForeground(Color.BLACK);
+		stat5_number.setHorizontalAlignment(SwingConstants.CENTER);
+		stat5_number.setFont(new Font("Open Sans", Font.BOLD, 55));
+		stat5_number.setBounds(78, 56, 90, 100);
+		stat_containe5.add(stat5_number);
+		
+		JPanel stat_containe6 = new JPanel();
+		stat_containe6.setLayout(null);
+		stat_containe6.setBorder(UIManager.getBorder("TextField.border"));
+		stat_containe6.setBackground(Color.WHITE);
+		stat_containe6.setBounds(473, 475, 211, 200);
+		stats_container.add(stat_containe6);
+		
+		JLabel stat6_title = new JLabel("Statistique 1");
+		stat6_title.setForeground(Color.BLACK);
+		stat6_title.setHorizontalAlignment(SwingConstants.CENTER);
+		stat6_title.setFont(new Font("Open Sans", Font.BOLD, 16));
+		stat6_title.setBounds(45, 20, 121, 20);
+		stat_containe6.add(stat6_title);
+		
+		JLabel stat6_icon = new JLabel(new ImageIcon(Fenetre_user.class.getResource("/images/login_icon.png")));
+		stat6_icon.setBounds(44, 90, 32, 32);
+		stat_containe6.add(stat6_icon);
+		
+		JLabel stat6_number = new JLabel("50");
+		stat6_number.setForeground(Color.BLACK);
+		stat6_number.setHorizontalAlignment(SwingConstants.CENTER);
+		stat6_number.setFont(new Font("Open Sans", Font.BOLD, 55));
+		stat6_number.setBounds(78, 56, 90, 100);
+		stat_containe6.add(stat6_number);
+		
+		JSeparator separator = new JSeparator();
+		separator.setForeground(Color.WHITE);
+		separator.setBounds(30, 185, 654, 2);
+		stats_container.add(separator);
+		
+		profil_container = new JPanel();
 		profil_container.setBounds(0, 0, 715, 727);
 		panel_containers.add(profil_container);
 		profil_container.setLayout(null);
@@ -881,7 +1222,7 @@ public class Fenetre_user extends JFrame {
 		save_button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		save_button.setBackground(new Color(29, 191, 115));
 		save_button.setBounds(256, 482, 140, 50);
-		profil_panel_4.add(save_button);*/
+		profil_panel_4.add(save_button);
 		
 		/* To center window in the middle*/
 		
