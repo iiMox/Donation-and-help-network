@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>660</x>
+      <y>90</y>
+      <w>280</w>
+      <h>340</h>
+    </coordinates>
+    <panel_attributes>User
+--
+
+ID : Int
+username : String
+password : String
+type : String
+Nom : String
+Prenom : String
+E-mail : String
+Date_naissance : Date
+Adresse : String
+Wilaya String
+Tel : Int
+
+--
+
+username_existe()
+ajout_user()
+user_existe()
+modifier_user
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>990</x>
+      <y>450</y>
+      <w>260</w>
+      <h>330</h>
+    </coordinates>
+    <panel_attributes>Don
+--
+
+CODE : Int
+title : String
+description : String
+owner : String
+date_creation : Date
+catégorie : String
+wilaya : String
+etat : String
+
+--
+
+ajout_don();
+modifier_don();
+supprimer_don();
+changer_etat();
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>400</x>
+      <y>520</y>
+      <w>260</w>
+      <h>200</h>
+    </coordinates>
+    <panel_attributes>Job
+--
+
+salaire : float
+durée : Date
+
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>520</x>
+      <y>460</y>
+      <w>490</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>470.0;10.0;10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>930</x>
+      <y>190</y>
+      <w>230</w>
+      <h>280</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1..1
+m2=0..*
+</panel_attributes>
+    <additional_attributes>10.0;20.0;190.0;20.0;190.0;260.0</additional_attributes>
+  </element>
+</diagram>

@@ -720,6 +720,8 @@ public class Fenetre_user extends JFrame {
         ajout_poste_btn.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
+        		Ajout_Don ad = new Ajout_Don();
+        		ad.setVisible(true);
         	}
         });
         ajout_poste_btn.setBackground(new Color(29,191,115));
