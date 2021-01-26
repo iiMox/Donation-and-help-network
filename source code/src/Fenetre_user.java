@@ -705,6 +705,8 @@ public class Fenetre_user extends JFrame {
         mes_demandes_btn.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
+        		Mes_Articles ma = new Mes_Articles(user.getUsername());
+        		ma.setVisible(true);
         	}
         });
         mes_demandes_btn.setBackground(Color.decode("#4b6584"));
@@ -720,7 +722,7 @@ public class Fenetre_user extends JFrame {
         ajout_poste_btn.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
-        		Ajout_Don ad = new Ajout_Don();
+        		Ajout_Don ad = new Ajout_Don(user.getUsername());
         		ad.setVisible(true);
         	}
         });

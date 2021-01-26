@@ -5,8 +5,7 @@ import javax.swing.JOptionPane;
 
 public class Don {
 	private int code;
-	private String title,description,owner,categorie,wilaya,etat;
-	private Date date_creation;
+	private String title,description,owner,categorie,wilaya,etat,date_creation;
 	
 	public Don() {
 		title="";
@@ -17,8 +16,7 @@ public class Don {
 		etat="";
 	}
 
-	public Don(int code, String title, String description, String owner, String categorie, String wilaya, String etat, Date date_creation) {
-		this.code = code;
+	public Don(String title, String description, String owner, String categorie, String wilaya, String etat, String date_creation) {
 		this.title = title;
 		this.description = description;
 		this.owner = owner;
@@ -84,11 +82,11 @@ public class Don {
 		this.etat = etat;
 	}
 
-	public Date getDate_creation() {
+	public String getDate_creation() {
 		return date_creation;
 	}
 
-	public void setDate_creation(Date date_creation) {
+	public void setDate_creation(String date_creation) {
 		this.date_creation = date_creation;
 	}
 	
@@ -97,11 +95,11 @@ public class Don {
 		oc.initialize();
 		
 		try {
-			oc.stmt=oc.con.prepareStatement("Insert into Dons (title,description,owner,date_don,categorie,wilaya,etat) Values (?,?,?,?,?,?,?)");
+			oc.stmt=oc.con.prepareStatement("Insert into Dons (title,description,owner,date_don,categorie,wilaya,etat) Values (?,?,?,TO_DATE(?,'dd-MM-yyyy HH24:MI'),?,?,?)");
 			oc.stmt.setString(1, title);
 			oc.stmt.setString(2, description);
 			oc.stmt.setString(3, owner);
-			oc.stmt.setDate(4, date_creation);
+			oc.stmt.setString(4, date_creation);
 			oc.stmt.setString(5, categorie);
 			oc.stmt.setString(6, wilaya);
 			oc.stmt.setString(7, etat);
@@ -118,14 +116,13 @@ public class Don {
 		oc.initialize();
 		
 		try {
-			oc.stmt=oc.con.prepareStatement("Updtae Don set title= ?, description=?, owner=?, date_don=?, categorie=?, wilaya=?, etat=? where code=?");
+			oc.stmt=oc.con.prepareStatement("Updtae Don set title= ?, description=?, owner=?, categorie=?, wilaya=?, etat=? where code=?");
 			oc.stmt.setString(1, title);
 			oc.stmt.setString(2, description);
 			oc.stmt.setString(3, owner);
-			oc.stmt.setDate(4, date_creation);
-			oc.stmt.setString(5, categorie);
-			oc.stmt.setString(6, wilaya);
-			oc.stmt.setString(7, etat);
+			oc.stmt.setString(4, categorie);
+			oc.stmt.setString(5, wilaya);
+			oc.stmt.setString(6, etat);
 			oc.stmt.setInt(8, code);
 			oc.rs = oc.stmt.executeQuery();
 			JOptionPane.showMessageDialog(null, "Opération a bien effectué ");

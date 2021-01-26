@@ -1,4 +1,7 @@
 import java.awt.*;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -39,7 +42,7 @@ public class PosteDon extends JPanel {
 		categorie.setForeground(Color.WHITE);
 		categorie.setHorizontalAlignment(SwingConstants.CENTER);
 		categorie.setFont(new Font("Open Sans", Font.BOLD, 14));
-		categorie.setBounds(10, 204, 90, 25);
+		categorie.setBounds(10, 204, 200, 25);
 		add(categorie);
 		
 		JLabel wilaya = new JLabel("Wilaya");
@@ -48,7 +51,7 @@ public class PosteDon extends JPanel {
 		wilaya.setForeground(Color.WHITE);
 		wilaya.setFont(new Font("Open Sans", Font.BOLD, 14));
 		wilaya.setBackground(new Color(29,191,115));
-		wilaya.setBounds(500, 204, 90, 25);
+		wilaya.setBounds(440, 204, 150, 25);
 		add(wilaya);
 		
 		JLabel owner = new JLabel("Username");
@@ -66,7 +69,7 @@ public class PosteDon extends JPanel {
 		JLabel date = new JLabel("17-01-2021");
 		date.setHorizontalAlignment(SwingConstants.RIGHT);
 		date.setFont(new Font("Open Sans", Font.BOLD, 13));
-		date.setBounds(500, 55, 90, 14);
+		date.setBounds(440, 55, 150, 14);
 		add(date);
 		
 		OracleConnection oc = new OracleConnection();
@@ -81,6 +84,12 @@ public class PosteDon extends JPanel {
 				desc.setText(oc.rs.getString("description"));
 				categorie.setText(oc.rs.getString("categorie"));
 				wilaya.setText(oc.rs.getString("wilaya"));
+				
+				SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+				Timestamp sql_date = oc.rs.getTimestamp("date_don");
+				java.util.Date utilDate = new java.util.Date(sql_date.getTime());
+				String dt = formatter.format(utilDate);
+				date.setText(dt);
 			}
 			
 			oc.con.close();
