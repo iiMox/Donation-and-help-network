@@ -36,8 +36,8 @@ modifier_user
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>990</x>
-      <y>450</y>
+      <x>940</x>
+      <y>460</y>
       <w>260</w>
       <h>330</h>
     </coordinates>
@@ -66,42 +66,59 @@ changer_etat();
     <id>UMLClass</id>
     <coordinates>
       <x>400</x>
-      <y>520</y>
+      <y>460</y>
       <w>260</w>
-      <h>200</h>
+      <h>330</h>
     </coordinates>
     <panel_attributes>Job
 --
 
+CODE : Int
+title : String
+description : String
+owner : String
+date_creation : Date
+catégorie : String
+wilaya : String
+etat : String
 salaire : float
 durée : Date
 
---</panel_attributes>
+--
+
+ajout_job();
+modifier_job();
+supprimer_job();
+changer_etat();
+</panel_attributes>
     <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>520</x>
-      <y>460</y>
-      <w>490</w>
-      <h>80</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
-    <additional_attributes>470.0;10.0;10.0;10.0;10.0;60.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>930</x>
       <y>190</y>
-      <w>230</w>
+      <w>180</w>
+      <h>290</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1..1
+m2=0..*
+</panel_attributes>
+    <additional_attributes>10.0;20.0;140.0;20.0;140.0;270.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>520</x>
+      <y>200</y>
+      <w>160</w>
       <h>280</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
 m1=1..1
 m2=0..*
 </panel_attributes>
-    <additional_attributes>10.0;20.0;190.0;20.0;190.0;260.0</additional_attributes>
+    <additional_attributes>140.0;20.0;10.0;20.0;10.0;260.0</additional_attributes>
   </element>
 </diagram>

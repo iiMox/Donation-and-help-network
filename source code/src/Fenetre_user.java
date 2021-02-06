@@ -426,87 +426,22 @@ public class Fenetre_user extends JFrame {
 		accueil_separator_1.setBounds(30, 170, 654, 2);
 		accueil_container.add(accueil_separator_1);
 		
-		JPanel accueil_poste_container1 = new JPanel();
-		accueil_poste_container1.setBorder(UIManager.getBorder("TextField.border"));
-		accueil_poste_container1.setBackground(Color.WHITE);
-		accueil_poste_container1.setBounds(30, 185, 200, 150);
-		accueil_container.add(accueil_poste_container1);
-		accueil_poste_container1.setLayout(null);
-		
-		JLabel accueil_poste_1_title = new JLabel("New label");
-		accueil_poste_1_title.setFont(new Font("Open Sans", Font.BOLD, 12));
-		accueil_poste_1_title.setBounds(10, 11, 180, 25);
-		accueil_poste_container1.add(accueil_poste_1_title);
-		
-		JLabel accueil_poste_1_desc = new JLabel("New label");
-		accueil_poste_1_desc.setFont(new Font("Open Sans", Font.PLAIN, 12));
-		accueil_poste_1_desc.setBounds(10, 40, 180, 70);
-		accueil_poste_container1.add(accueil_poste_1_desc);
-		
-		JLabel accueil_poste_1_icon = new JLabel(new ImageIcon(Fenetre_user.class.getResource("/images/location_icon.png")));
-		accueil_poste_1_icon.setLocation(100, 121);
-		accueil_poste_1_icon.setSize(16, 16);
-		accueil_poste_container1.add(accueil_poste_1_icon);
-		
-		JLabel accueil_poste_1_liocation = new JLabel("wilaya");
-		accueil_poste_1_liocation.setHorizontalAlignment(SwingConstants.LEFT);
-		accueil_poste_1_liocation.setFont(new Font("Open Sans", Font.PLAIN, 12));
-		accueil_poste_1_liocation.setBounds(119, 121, 70, 16);
-		accueil_poste_container1.add(accueil_poste_1_liocation);
-		
-		JPanel accueil_poste_container2 = new JPanel();
-		accueil_poste_container2.setBorder(UIManager.getBorder("TextField.border"));
-		accueil_poste_container2.setBackground(Color.WHITE);
-		accueil_poste_container2.setBounds(257, 185, 200, 150);
-		accueil_container.add(accueil_poste_container2);
-		accueil_poste_container2.setLayout(null);
-		
-		JLabel accueil_poste_2_title = new JLabel("New label");
-		accueil_poste_2_title.setFont(new Font("Open Sans", Font.BOLD, 12));
-		accueil_poste_2_title.setBounds(10, 11, 180, 25);
-		accueil_poste_container2.add(accueil_poste_2_title);
-		
-		JLabel accueil_poste_2_desc = new JLabel("New label");
-		accueil_poste_2_desc.setFont(new Font("Open Sans", Font.PLAIN, 12));
-		accueil_poste_2_desc.setBounds(10, 40, 180, 70);
-		accueil_poste_container2.add(accueil_poste_2_desc);
-		
-		JLabel accueil_poste_2_location = new JLabel("wilaya");
-		accueil_poste_2_location.setHorizontalAlignment(SwingConstants.LEFT);
-		accueil_poste_2_location.setFont(new Font("Open Sans", Font.PLAIN, 12));
-		accueil_poste_2_location.setBounds(119, 121, 70, 16);
-		accueil_poste_container2.add(accueil_poste_2_location);
-		
-		JLabel accueil_poste_2_icon = new JLabel(new ImageIcon(Fenetre_user.class.getResource("/images/location_icon.png")));
-		accueil_poste_2_icon.setBounds(100, 121, 16, 16);
-		accueil_poste_container2.add(accueil_poste_2_icon);
-		
-		JPanel accueil_poste_container3 = new JPanel();
-		accueil_poste_container3.setBorder(UIManager.getBorder("TextField.border"));
-		accueil_poste_container3.setBackground(Color.WHITE);
-		accueil_poste_container3.setBounds(484, 183, 200, 150);
-		accueil_container.add(accueil_poste_container3);
-		accueil_poste_container3.setLayout(null);
-		
-		JLabel accueil_poste_3_title = new JLabel("New label");
-		accueil_poste_3_title.setFont(new Font("Open Sans", Font.BOLD, 12));
-		accueil_poste_3_title.setBounds(10, 11, 180, 25);
-		accueil_poste_container3.add(accueil_poste_3_title);
-		
-		JLabel accueil_poste_3_desc = new JLabel("New label");
-		accueil_poste_3_desc.setFont(new Font("Open Sans", Font.PLAIN, 12));
-		accueil_poste_3_desc.setBounds(10, 40, 180, 70);
-		accueil_poste_container3.add(accueil_poste_3_desc);
-		
-		JLabel accueil_poste_3_location = new JLabel("wilaya");
-		accueil_poste_3_location.setHorizontalAlignment(SwingConstants.LEFT);
-		accueil_poste_3_location.setFont(new Font("Open Sans", Font.PLAIN, 12));
-		accueil_poste_3_location.setBounds(119, 123, 70, 16);
-		accueil_poste_container3.add(accueil_poste_3_location);
-		
-		JLabel accueil_poste_3_icon = new JLabel(new ImageIcon(Fenetre_user.class.getResource("/images/location_icon.png")));
-		accueil_poste_3_icon.setBounds(100, 123, 16, 16);
-		accueil_poste_container3.add(accueil_poste_3_icon);
+		OracleConnection oc = new OracleConnection();
+		oc.initialize();
+		int nb=0;
+		int x=30;
+		try {
+			oc.stmt = oc.con.prepareStatement("select * from dons order by date_don Desc");
+			oc.rs= oc.stmt.executeQuery();
+			while(oc.rs.next() & nb<3) {
+				accueil_container.add(new AccueilPosteContainer(oc.rs.getString("title"),oc.rs.getString("description"),oc.rs.getString("wilaya"),x));
+				nb++;
+				x+=227;
+			}
+			oc.con.close();
+		} catch(Exception e) {
+			JOptionPane.showMessageDialog(null, "Erreur de connexion à la base de données");
+		}
 		
 		JLabel accueil_lblNewLabel_9 = new JLabel("Offres r\u00E9cents");
 		accueil_lblNewLabel_9.setFont(new Font("Open Sans", Font.BOLD, 20));
@@ -519,86 +454,21 @@ public class Fenetre_user extends JFrame {
 		accueil_separator_2.setBounds(30, 430, 654, 2);
 		accueil_container.add(accueil_separator_2);
 		
-		JPanel accueil_offre_container1_1 = new JPanel();
-		accueil_offre_container1_1.setBorder(UIManager.getBorder("TextField.border"));
-		accueil_offre_container1_1.setBackground(Color.WHITE);
-		accueil_offre_container1_1.setBounds(30, 445, 200, 150);
-		accueil_container.add(accueil_offre_container1_1);
-		accueil_offre_container1_1.setLayout(null);
-		
-		JLabel accueil_offre_1_title = new JLabel("New label");
-		accueil_offre_1_title.setFont(new Font("Open Sans", Font.BOLD, 12));
-		accueil_offre_1_title.setBounds(10, 11, 180, 25);
-		accueil_offre_container1_1.add(accueil_offre_1_title);
-		
-		JLabel accueil_offre_1_desc = new JLabel("New label");
-		accueil_offre_1_desc.setFont(new Font("Open Sans", Font.PLAIN, 12));
-		accueil_offre_1_desc.setBounds(10, 40, 180, 70);
-		accueil_offre_container1_1.add(accueil_offre_1_desc);
-		
-		JLabel accueil_offre_1_liocation = new JLabel("wilaya");
-		accueil_offre_1_liocation.setHorizontalAlignment(SwingConstants.LEFT);
-		accueil_offre_1_liocation.setFont(new Font("Open Sans", Font.PLAIN, 12));
-		accueil_offre_1_liocation.setBounds(119, 121, 70, 16);
-		accueil_offre_container1_1.add(accueil_offre_1_liocation);
-		
-		JLabel accueil_offre_1_icon = new JLabel(new ImageIcon(Fenetre_user.class.getResource("/images/location_icon.png")));
-		accueil_offre_1_icon.setBounds(100, 121, 16, 16);
-		accueil_offre_container1_1.add(accueil_offre_1_icon);
-		
-		JPanel accueil_offre_container2_1 = new JPanel();
-		accueil_offre_container2_1.setBorder(UIManager.getBorder("TextField.border"));
-		accueil_offre_container2_1.setBackground(Color.WHITE);
-		accueil_offre_container2_1.setBounds(257, 445, 200, 150);
-		accueil_container.add(accueil_offre_container2_1);
-		accueil_offre_container2_1.setLayout(null);
-		
-		JLabel accueil_offre_2_title = new JLabel("New label");
-		accueil_offre_2_title.setFont(new Font("Open Sans", Font.BOLD, 12));
-		accueil_offre_2_title.setBounds(10, 11, 180, 25);
-		accueil_offre_container2_1.add(accueil_offre_2_title);
-		
-		JLabel accueil_offre_2_desc = new JLabel("New label");
-		accueil_offre_2_desc.setFont(new Font("Open Sans", Font.PLAIN, 12));
-		accueil_offre_2_desc.setBounds(10, 40, 180, 70);
-		accueil_offre_container2_1.add(accueil_offre_2_desc);
-		
-		JLabel accueil_offre_2_location = new JLabel("wilaya");
-		accueil_offre_2_location.setHorizontalAlignment(SwingConstants.LEFT);
-		accueil_offre_2_location.setFont(new Font("Open Sans", Font.PLAIN, 12));
-		accueil_offre_2_location.setBounds(119, 121, 70, 16);
-		accueil_offre_container2_1.add(accueil_offre_2_location);
-		
-		JLabel accueil_offre_2_icon = new JLabel(new ImageIcon(Fenetre_user.class.getResource("/images/location_icon.png")));
-		accueil_offre_2_icon.setBounds(100, 121, 16, 16);
-		accueil_offre_container2_1.add(accueil_offre_2_icon);
-		
-		JPanel accueil_offre_container3_1 = new JPanel();
-		accueil_offre_container3_1.setBorder(UIManager.getBorder("TextField.border"));
-		accueil_offre_container3_1.setBackground(Color.WHITE);
-		accueil_offre_container3_1.setBounds(484, 445, 200, 150);
-		accueil_container.add(accueil_offre_container3_1);
-		accueil_offre_container3_1.setLayout(null);
-		
-		JLabel accueil_offre_3_title = new JLabel("New label");
-		accueil_offre_3_title.setFont(new Font("Open Sans", Font.BOLD, 12));
-		accueil_offre_3_title.setBounds(10, 11, 180, 25);
-		accueil_offre_container3_1.add(accueil_offre_3_title);
-		
-		JLabel accueil_offre_3_desc = new JLabel("New label");
-		accueil_offre_3_desc.setFont(new Font("Open Sans", Font.PLAIN, 12));
-		accueil_offre_3_desc.setBounds(10, 40, 180, 70);
-		accueil_offre_container3_1.add(accueil_offre_3_desc);
-		
-		JLabel accueil_offre_3_icon = new JLabel(new ImageIcon(Fenetre_user.class.getResource("/images/location_icon.png")));
-		accueil_offre_3_icon.setBounds(100, 123, 16, 16);
-		accueil_offre_container3_1.add(accueil_offre_3_icon);
-		
-		JLabel accueil_offre_3_location = new JLabel("wilaya");
-		accueil_offre_3_location.setHorizontalAlignment(SwingConstants.LEFT);
-		accueil_offre_3_location.setFont(new Font("Open Sans", Font.PLAIN, 12));
-		accueil_offre_3_location.setBounds(119, 123, 70, 16);
-		accueil_offre_container3_1.add(accueil_offre_3_location);
+		oc.initialize();
+		nb=0;
+		x=30;
+		try {
+			oc.stmt = oc.con.prepareStatement("select * from Jobs order by date_job Desc");
+			oc.rs= oc.stmt.executeQuery();
+			while(oc.rs.next() & nb<3) {
+				accueil_container.add(new AccueilOffreContainer(oc.rs.getString("titre"),oc.rs.getString("description"),oc.rs.getString("wilaya"),x));
+				nb++;
+				x+=227;
+			}
+			oc.con.close();
+		} catch(Exception e) {
+			JOptionPane.showMessageDialog(null, "Erreur de connexion à la base de données");
+		}
 		
 		JButton accueil_postes_voirplus = new JButton("Voir plus ..");
 		accueil_postes_voirplus.addMouseListener(new MouseAdapter() {
@@ -614,6 +484,8 @@ public class Fenetre_user extends JFrame {
 				jobs_container.setVisible(false);
 				stats_container.setVisible(false);
 				profil_container.setVisible(false);
+				scrollPane.setVisible(true);
+				scrollPane_jobs.setVisible(false);
 			}
 		});
 		accueil_postes_voirplus.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -638,6 +510,8 @@ public class Fenetre_user extends JFrame {
 				jobs_container.setVisible(true);
 				stats_container.setVisible(false);
 				profil_container.setVisible(false);
+				scrollPane.setVisible(false);
+				scrollPane_jobs.setVisible(true);
 			}
 		});
 		accueil_offres_voirplus.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -682,7 +556,6 @@ public class Fenetre_user extends JFrame {
         scrollPane.setLocation(30, 150);
         
         Vector<Integer> v =new Vector<Integer>();
-        OracleConnection oc = new OracleConnection();
         oc.initialize();
         try {
         	oc.stmt = oc.con.prepareStatement("Select * From Dons Where Etat='accepter'");
@@ -752,23 +625,24 @@ public class Fenetre_user extends JFrame {
 		jobs_panel_3.add(jobs_lblNewLabel_7);
 		
 		
+		scrollPanel_jobs.setBackground(Color.WHITE);
 		GridLayout gl_scrollPanel_jobs = new GridLayout();
 		gl_scrollPanel_jobs.setColumns(1);
 		gl_scrollPanel_jobs.setHgap(20);
 		gl_scrollPanel_jobs.setVgap(20);
 		gl_scrollPanel_jobs.setRows(0);
 		scrollPanel_jobs.setLayout(gl_scrollPanel_jobs);
-		scrollPanel_jobs.setBackground(Color.WHITE);
 		scrollPanel_jobs.setBorder(new CompoundBorder(null, new EmptyBorder(20, 20, 20, 20)));
-		scrollPanel_jobs.setSize(new Dimension(300, 300));       
-		scrollPane_jobs.setVisible(false);
+        scrollPanel_jobs.setSize(new Dimension(300, 300));       
+        scrollPane_jobs.setVisible(false);
         scrollPane_jobs.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane_jobs.setSize(654, 500);
         scrollPane_jobs.setLocation(30, 150);
         
         Vector<Integer> v_jobs =new Vector<Integer>();
+        oc.initialize();
         try {
-        	oc.stmt = oc.con.prepareStatement("Select * From Dons Where Etat='accepter'");
+        	oc.stmt = oc.con.prepareStatement("Select * From jobs Where Etat='accepter'");
         	oc.rs = oc.stmt.executeQuery();
         	while(oc.rs.next()) {
         		v_jobs.add(oc.rs.getInt("code"));
@@ -779,7 +653,7 @@ public class Fenetre_user extends JFrame {
         }
         
         for(int j=0; j<v_jobs.size(); j++) {
-        	scrollPane_jobs.add(new PosteDon(v_jobs.get(j)));
+        	scrollPanel_jobs.add(new PosteJob(v_jobs.get(j)));
         }
         
         jobs_container.add(scrollPane_jobs);
