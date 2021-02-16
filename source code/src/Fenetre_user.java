@@ -1,8 +1,12 @@
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.*;
@@ -25,10 +29,123 @@ public class Fenetre_user extends JFrame {
 	private JTextField profil_tel;
 	private JScrollPane scrollPane,scrollPane_jobs; 
 	private JPanel scrollPanel,scrollPanel_jobs;
-
+	private JLabel stat1_number,stat2_number,stat3_number,stat4_number,stat5_number,stat6_number;
 	/**
 	 * Create the frame.
 	 */
+	
+	void getStats(String owner, String date1, String date2) {
+		OracleConnection oc = new OracleConnection();
+		oc.initialize();
+		try {
+			oc.stmt = oc.con.prepareStatement("Select count(*) as c1 from Dons where date_don<TO_DATE(?,'dd-MM-yyyy HH24:MI') and date_don>TO_DATE(?,'dd-MM-yyyy HH24:MI')");
+			oc.stmt.setString(1, date1);
+			oc.stmt.setString(2, date2);
+			oc.rs = oc.stmt.executeQuery();
+			if(oc.rs.next()) {
+				stat1_number.setText(String.valueOf(oc.rs.getInt("c1")));
+			}
+			
+			oc.stmt = oc.con.prepareStatement("Select count(*) as c2 from Dons where owner=? and etat ='actif' and date_don<TO_DATE(?,'dd-MM-yyyy HH24:MI') and date_don>TO_DATE(?,'dd-MM-yyyy HH24:MI')");
+			oc.stmt.setString(1, owner);
+			oc.stmt.setString(2, date1);
+			oc.stmt.setString(3, date2);
+			oc.rs = oc.stmt.executeQuery();
+			if(oc.rs.next()) {
+				stat2_number.setText(String.valueOf(oc.rs.getInt("c2")));
+			}
+			
+			oc.stmt = oc.con.prepareStatement("Select count(*) as c3 from Dons where owner=? and etat ='en attend' and date_don<TO_DATE(?,'dd-MM-yyyy HH24:MI') and date_don>TO_DATE(?,'dd-MM-yyyy HH24:MI')");
+			oc.stmt.setString(1, owner);
+			oc.stmt.setString(2, date1);
+			oc.stmt.setString(3, date2);
+			oc.rs = oc.stmt.executeQuery();
+			if(oc.rs.next()) {
+				stat3_number.setText(String.valueOf(oc.rs.getInt("c3")));
+			}
+			
+			oc.stmt = oc.con.prepareStatement("Select count(*) as c4 from jobs where date_Job<TO_DATE(?,'dd-MM-yyyy HH24:MI') and date_job>TO_DATE(?,'dd-MM-yyyy HH24:MI')");
+			oc.stmt.setString(1, date1);
+			oc.stmt.setString(2, date2);
+			oc.rs = oc.stmt.executeQuery();
+			if(oc.rs.next()) {
+				stat4_number.setText(String.valueOf(oc.rs.getInt("c4")));
+			}
+			
+			oc.stmt = oc.con.prepareStatement("Select count(*) as c5 from jobs where owner=? and etat ='actif' and date_Job<TO_DATE(?,'dd-MM-yyyy HH24:MI') and date_job>TO_DATE(?,'dd-MM-yyyy HH24:MI')");
+			oc.stmt.setString(1, owner);
+			oc.stmt.setString(2, date1);
+			oc.stmt.setString(3, date2);
+			oc.rs = oc.stmt.executeQuery();
+			if(oc.rs.next()) {
+				stat5_number.setText(String.valueOf(oc.rs.getInt("c5")));
+			}
+			
+			oc.stmt = oc.con.prepareStatement("Select count(*) as c6 from jobs where owner=? and etat ='en attend' and date_Job<TO_DATE(?,'dd-MM-yyyy HH24:MI') and date_job>TO_DATE(?,'dd-MM-yyyy HH24:MI')");
+			oc.stmt.setString(1, owner);
+			oc.stmt.setString(2, date1);
+			oc.stmt.setString(3, date2);
+			oc.rs = oc.stmt.executeQuery();
+			if(oc.rs.next()) {
+				stat6_number.setText(String.valueOf(oc.rs.getInt("c6")));
+			}
+			oc.con.close();
+			
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Erreur de connexion à la base de données");
+		}
+	}
+	
+	void getAllStats(String owner) {
+		OracleConnection oc = new OracleConnection();
+		oc.initialize();
+		try {
+			oc.stmt = oc.con.prepareStatement("Select count(*) as c1 from Dons");
+			oc.rs = oc.stmt.executeQuery();
+			if(oc.rs.next()) {
+				stat1_number.setText(String.valueOf(oc.rs.getInt("c1")));
+			}
+			
+			oc.stmt = oc.con.prepareStatement("Select count(*) as c2 from Dons where owner=? and etat ='actif'");
+			oc.stmt.setString(1, owner);
+			oc.rs = oc.stmt.executeQuery();
+			if(oc.rs.next()) {
+				stat2_number.setText(String.valueOf(oc.rs.getInt("c2")));
+			}
+			
+			oc.stmt = oc.con.prepareStatement("Select count(*) as c3 from Dons where owner=? and etat ='en attend'");
+			oc.stmt.setString(1, owner);
+			oc.rs = oc.stmt.executeQuery();
+			if(oc.rs.next()) {
+				stat3_number.setText(String.valueOf(oc.rs.getInt("c3")));
+			}
+			
+			oc.stmt = oc.con.prepareStatement("Select count(*) as c4 from jobs");
+			oc.rs = oc.stmt.executeQuery();
+			if(oc.rs.next()) {
+				stat4_number.setText(String.valueOf(oc.rs.getInt("c4")));
+			}
+			
+			oc.stmt = oc.con.prepareStatement("Select count(*) as c5 from jobs where owner=? and etat ='actif'");
+			oc.stmt.setString(1, owner);
+			oc.rs = oc.stmt.executeQuery();
+			if(oc.rs.next()) {
+				stat5_number.setText(String.valueOf(oc.rs.getInt("c5")));
+			}
+			
+			oc.stmt = oc.con.prepareStatement("Select count(*) as c6 from jobs where owner=? and etat ='en attend'");
+			oc.stmt.setString(1, owner);
+			oc.rs = oc.stmt.executeQuery();
+			if(oc.rs.next()) {
+				stat6_number.setText(String.valueOf(oc.rs.getInt("c6")));
+			}
+			oc.con.close();
+			
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Erreur de connexion à la base de données");
+		}
+	}
+	
 	public Fenetre_user(int ID) {
 		User user = new User();
 		user.getUserById(ID);
@@ -38,6 +155,13 @@ public class Fenetre_user extends JFrame {
 		
         scrollPane = new JScrollPane(scrollPanel);
         scrollPane_jobs = new JScrollPane(scrollPanel_jobs);
+        
+        stat1_number = new JLabel();
+        stat2_number = new JLabel();
+        stat3_number = new JLabel();
+        stat4_number = new JLabel();
+        stat5_number = new JLabel();
+        stat6_number = new JLabel();
         
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -67,7 +191,9 @@ public class Fenetre_user extends JFrame {
 		lblNewLabel.setBounds(92, 20, 106, 47);
 		panel.add(lblNewLabel);
 		
+		
 		panel_accueil = new JPanel();
+		panel_accueil.setBackground(Color.decode("#1db36d"));		
 		panel_accueil.addMouseListener(new MouseAdapter() {
 			/*@Override
 			public void mouseEntered(MouseEvent e) {
@@ -232,6 +358,14 @@ public class Fenetre_user extends JFrame {
 				profil_container.setVisible(false);
 				scrollPane.setVisible(false);
 				scrollPane_jobs.setVisible(false);
+				
+				SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+				java.util.Date utilDate = new Date();
+				String dt = formatter.format(utilDate);
+				utilDate.setHours(00);
+				utilDate.setMinutes(00);
+				String dt2 = formatter.format(utilDate);
+				getStats(user.getUsername(),dt,dt2);
 			}
 		});
 		
@@ -523,6 +657,7 @@ public class Fenetre_user extends JFrame {
 		accueil_container.add(accueil_offres_voirplus);
 		
 		dons_container = new JPanel();
+		dons_container.setVisible(false);
 		dons_container.setBounds(0, 0, 715, 727);
 		panel_containers.add(dons_container);
 		dons_container.setLayout(null);
@@ -558,7 +693,7 @@ public class Fenetre_user extends JFrame {
         Vector<Integer> v =new Vector<Integer>();
         oc.initialize();
         try {
-        	oc.stmt = oc.con.prepareStatement("Select * From Dons Where Etat='accepter'");
+        	oc.stmt = oc.con.prepareStatement("Select * From Dons Where Etat='actif'");
         	oc.rs = oc.stmt.executeQuery();
         	while(oc.rs.next()) {
         		v.add(oc.rs.getInt("code"));
@@ -607,6 +742,7 @@ public class Fenetre_user extends JFrame {
         dons_container.add(ajout_poste_btn);
 		
 		jobs_container = new JPanel();
+		jobs_container.setVisible(false);
 		jobs_container.setBounds(0, 0, 715, 727);
 		panel_containers.add(jobs_container);
 		jobs_container.setLayout(null);
@@ -642,7 +778,7 @@ public class Fenetre_user extends JFrame {
         Vector<Integer> v_jobs =new Vector<Integer>();
         oc.initialize();
         try {
-        	oc.stmt = oc.con.prepareStatement("Select * From jobs Where Etat='accepter'");
+        	oc.stmt = oc.con.prepareStatement("Select * From jobs Where Etat='actif'");
         	oc.rs = oc.stmt.executeQuery();
         	while(oc.rs.next()) {
         		v_jobs.add(oc.rs.getInt("code"));
@@ -662,6 +798,8 @@ public class Fenetre_user extends JFrame {
         mes_offres_btn.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
+        		Mes_Offres mo = new Mes_Offres(user.getUsername());
+        		mo.setVisible(true);
         	}
         });
         mes_offres_btn.setBackground(Color.decode("#4b6584"));
@@ -677,6 +815,8 @@ public class Fenetre_user extends JFrame {
         ajout_offre_btn.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
+        		Ajout_Job aj = new Ajout_Job(user.getUsername());
+        		aj.setVisible(true);
         	}
         });
         ajout_offre_btn.setBackground(new Color(29,191,115));
@@ -687,6 +827,7 @@ public class Fenetre_user extends JFrame {
         jobs_container.add(ajout_offre_btn);
 		
 		stats_container = new JPanel();
+		stats_container.setVisible(false);
 		stats_container.setBounds(0, 0, 715, 727);
 		panel_containers.add(stats_container);
 		stats_container.setLayout(null);
@@ -712,6 +853,43 @@ public class Fenetre_user extends JFrame {
 		String groupes[] = {"Aujourd'hui","7 Jours","Dernier Mois","1 AN","Tous"};
 		
 		JComboBox intervall = new JComboBox(groupes);
+		intervall.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(intervall.getSelectedItem().equals("Aujourd'hui")) {
+					SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+					java.util.Date utilDate = new Date();
+					String dt = formatter.format(utilDate);
+					utilDate.setHours(00);
+					utilDate.setMinutes(00);
+					String dt2 = formatter.format(utilDate);
+					getStats(user.getUsername(),dt,dt2);
+				} else if(intervall.getSelectedItem().equals("7 Jours")) {
+					SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+					java.util.Date utilDate = new Date();
+					String dt = formatter.format(utilDate);
+					utilDate.setDate(utilDate.getDate()-7);
+					String dt2 = formatter.format(utilDate);
+					getStats(user.getUsername(),dt,dt2);
+				} else if(intervall.getSelectedItem().equals("Dernier Mois")) {
+					SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+					java.util.Date utilDate = new Date();
+					String dt = formatter.format(utilDate);
+					utilDate.setMonth(utilDate.getMonth()-1);
+					String dt2 = formatter.format(utilDate);
+					getStats(user.getUsername(),dt,dt2);
+				} else if(intervall.getSelectedItem().equals("1 AN")) {
+					SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+					java.util.Date utilDate = new Date();
+					String dt = formatter.format(utilDate);
+					utilDate.setYear(utilDate.getYear()-1);
+					String dt2 = formatter.format(utilDate);
+					getStats(user.getUsername(),dt,dt2);
+				} else {
+					getAllStats(user.getUsername());
+				}
+			}
+		});
+
 		intervall.setFont(new Font("Open Sans", Font.PLAIN, 13));
 		intervall.setBackground(Color.WHITE);
 		intervall.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
@@ -726,19 +904,18 @@ public class Fenetre_user extends JFrame {
 		stats_container.add(stat_containe1);
 		stat_containe1.setLayout(null);
 		
-		JLabel stat1_title = new JLabel("Statistique 1");
+		JLabel stat1_title = new JLabel("Total articles");
 		stat1_title.setForeground(Color.BLACK);
 		stat1_title.setFont(new Font("Open Sans", Font.BOLD, 16));
 		stat1_title.setHorizontalAlignment(SwingConstants.CENTER);
-		stat1_title.setBounds(45, 20, 121, 20);
+		stat1_title.setBounds(0, 20, 211, 20);
 		stat_containe1.add(stat1_title);
 		
-		JLabel stat1_icon = new JLabel(new ImageIcon(Fenetre_user.class.getResource("/images/login_icon.png")));
+		JLabel stat1_icon = new JLabel(new ImageIcon(Fenetre_user.class.getResource("/images/heart-5.png")));
 		stat1_icon.setLocation(44, 90);
 		stat1_icon.setSize(32, 32);
 		stat_containe1.add(stat1_icon);
 		
-		JLabel stat1_number = new JLabel("50");
 		stat1_number.setForeground(Color.BLACK);
 		stat1_number.setHorizontalAlignment(SwingConstants.CENTER);
 		stat1_number.setFont(new Font("Open Sans", Font.BOLD, 55));
@@ -752,22 +929,22 @@ public class Fenetre_user extends JFrame {
 		stat_containe2.setBounds(251, 225, 211, 200);
 		stats_container.add(stat_containe2);
 		
-		JLabel stat2_title = new JLabel("Statistique 1");
+		JLabel stat2_title = new JLabel("Mes articles actifs");
 		stat2_title.setForeground(Color.BLACK);
 		stat2_title.setHorizontalAlignment(SwingConstants.CENTER);
 		stat2_title.setFont(new Font("Open Sans", Font.BOLD, 16));
-		stat2_title.setBounds(45, 20, 121, 20);
+		stat2_title.setBounds(0, 20, 211, 20);
 		stat_containe2.add(stat2_title);
 		
-		JLabel stat2_icon = new JLabel(new ImageIcon(Fenetre_user.class.getResource("/images/login_icon.png")));
+		JLabel stat2_icon = new JLabel(new ImageIcon(Fenetre_user.class.getResource("/images/heart green.png")));
 		stat2_icon.setBounds(44, 90, 32, 32);
 		stat_containe2.add(stat2_icon);
 		
-		JLabel stat2_number = new JLabel("50");
 		stat2_number.setForeground(Color.BLACK);
 		stat2_number.setHorizontalAlignment(SwingConstants.CENTER);
 		stat2_number.setFont(new Font("Open Sans", Font.BOLD, 55));
 		stat2_number.setBounds(78, 56, 90, 100);
+		stat2_number.setForeground(new Color(29, 191, 115));
 		stat_containe2.add(stat2_number);
 		
 		JPanel stat_containe3 = new JPanel();
@@ -777,22 +954,22 @@ public class Fenetre_user extends JFrame {
 		stat_containe3.setBounds(473, 225, 211, 200);
 		stats_container.add(stat_containe3);
 		
-		JLabel stat3_title = new JLabel("Statistique 1");
+		JLabel stat3_title = new JLabel("Mes articles en attends");
 		stat3_title.setForeground(Color.BLACK);
 		stat3_title.setHorizontalAlignment(SwingConstants.CENTER);
 		stat3_title.setFont(new Font("Open Sans", Font.BOLD, 16));
-		stat3_title.setBounds(45, 20, 121, 20);
+		stat3_title.setBounds(0, 20, 211, 20);
 		stat_containe3.add(stat3_title);
 		
-		JLabel stat3_icon = new JLabel(new ImageIcon(Fenetre_user.class.getResource("/images/login_icon.png")));
+		JLabel stat3_icon = new JLabel(new ImageIcon(Fenetre_user.class.getResource("/images/heart red.png")));
 		stat3_icon.setBounds(44, 90, 32, 32);
 		stat_containe3.add(stat3_icon);
 		
-		JLabel stat3_number = new JLabel("50");
 		stat3_number.setForeground(Color.BLACK);
 		stat3_number.setHorizontalAlignment(SwingConstants.CENTER);
 		stat3_number.setFont(new Font("Open Sans", Font.BOLD, 55));
 		stat3_number.setBounds(78, 56, 90, 100);
+		stat3_number.setForeground(new Color(231,14,14));
 		stat_containe3.add(stat3_number);
 		
 		JPanel stat_containe4 = new JPanel();
@@ -802,18 +979,17 @@ public class Fenetre_user extends JFrame {
 		stat_containe4.setBounds(30, 475, 211, 200);
 		stats_container.add(stat_containe4);
 		
-		JLabel stat4_title = new JLabel("Statistique 1");
+		JLabel stat4_title = new JLabel("Total offres");
 		stat4_title.setForeground(Color.BLACK);
 		stat4_title.setHorizontalAlignment(SwingConstants.CENTER);
 		stat4_title.setFont(new Font("Open Sans", Font.BOLD, 16));
-		stat4_title.setBounds(45, 20, 121, 20);
+		stat4_title.setBounds(0, 20, 211, 20);
 		stat_containe4.add(stat4_title);
 		
-		JLabel stat4_icon = new JLabel(new ImageIcon(Fenetre_user.class.getResource("/images/login_icon.png")));
+		JLabel stat4_icon = new JLabel(new ImageIcon(Fenetre_user.class.getResource("/images/suitcase.png")));
 		stat4_icon.setBounds(44, 90, 32, 32);
 		stat_containe4.add(stat4_icon);
 		
-		JLabel stat4_number = new JLabel("50");
 		stat4_number.setForeground(Color.BLACK);
 		stat4_number.setHorizontalAlignment(SwingConstants.CENTER);
 		stat4_number.setFont(new Font("Open Sans", Font.BOLD, 55));
@@ -827,22 +1003,22 @@ public class Fenetre_user extends JFrame {
 		stat_containe5.setBounds(251, 475, 211, 200);
 		stats_container.add(stat_containe5);
 		
-		JLabel stat5_title = new JLabel("Statistique 1");
+		JLabel stat5_title = new JLabel("Mes offres actifs");
 		stat5_title.setForeground(Color.BLACK);
 		stat5_title.setHorizontalAlignment(SwingConstants.CENTER);
 		stat5_title.setFont(new Font("Open Sans", Font.BOLD, 16));
-		stat5_title.setBounds(45, 20, 121, 20);
+		stat5_title.setBounds(0, 20, 211, 20);
 		stat_containe5.add(stat5_title);
 		
-		JLabel stat5_icon = new JLabel(new ImageIcon(Fenetre_user.class.getResource("/images/login_icon.png")));
+		JLabel stat5_icon = new JLabel(new ImageIcon(Fenetre_user.class.getResource("/images/suitcase green.png")));
 		stat5_icon.setBounds(44, 90, 32, 32);
 		stat_containe5.add(stat5_icon);
 		
-		JLabel stat5_number = new JLabel("50");
 		stat5_number.setForeground(Color.BLACK);
 		stat5_number.setHorizontalAlignment(SwingConstants.CENTER);
 		stat5_number.setFont(new Font("Open Sans", Font.BOLD, 55));
 		stat5_number.setBounds(78, 56, 90, 100);
+		stat5_number.setForeground(new Color(29, 191, 115));
 		stat_containe5.add(stat5_number);
 		
 		JPanel stat_containe6 = new JPanel();
@@ -852,22 +1028,22 @@ public class Fenetre_user extends JFrame {
 		stat_containe6.setBounds(473, 475, 211, 200);
 		stats_container.add(stat_containe6);
 		
-		JLabel stat6_title = new JLabel("Statistique 1");
+		JLabel stat6_title = new JLabel("Mes offres en attends");
 		stat6_title.setForeground(Color.BLACK);
 		stat6_title.setHorizontalAlignment(SwingConstants.CENTER);
 		stat6_title.setFont(new Font("Open Sans", Font.BOLD, 16));
-		stat6_title.setBounds(45, 20, 121, 20);
+		stat6_title.setBounds(0, 20, 211, 20);
 		stat_containe6.add(stat6_title);
 		
-		JLabel stat6_icon = new JLabel(new ImageIcon(Fenetre_user.class.getResource("/images/login_icon.png")));
+		JLabel stat6_icon = new JLabel(new ImageIcon(Fenetre_user.class.getResource("/images/suitcase red.png")));
 		stat6_icon.setBounds(44, 90, 32, 32);
 		stat_containe6.add(stat6_icon);
 		
-		JLabel stat6_number = new JLabel("50");
 		stat6_number.setForeground(Color.BLACK);
 		stat6_number.setHorizontalAlignment(SwingConstants.CENTER);
 		stat6_number.setFont(new Font("Open Sans", Font.BOLD, 55));
 		stat6_number.setBounds(78, 56, 90, 100);
+		stat6_number.setForeground(new Color(231,14,14));
 		stat_containe6.add(stat6_number);
 		
 		JSeparator separator = new JSeparator();
@@ -876,6 +1052,7 @@ public class Fenetre_user extends JFrame {
 		stats_container.add(separator);
 		
 		profil_container = new JPanel();
+		profil_container.setVisible(false);
 		profil_container.setBounds(0, 0, 715, 727);
 		panel_containers.add(profil_container);
 		profil_container.setLayout(null);

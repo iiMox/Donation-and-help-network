@@ -1,30 +1,40 @@
-
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.Toolkit;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
-
-import net.proteanit.sql.DbUtils;
+import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class Mes_Articles extends JFrame {
+public class Mes_Offres extends JFrame {
 
 	private JPanel contentPane;
 	private JTable table;
-
-	public Mes_Articles(String username) {
+	
+	public Mes_Offres(String username) {
 		OracleConnection oc = new OracleConnection();
 		setResizable(false);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Mes_Articles.class.getResource("/images/login_icon.png")));
-		setTitle("Mes articles de don");
+		setTitle("Mes offres d'emplois");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 900, 600);
 		contentPane = new JPanel();
@@ -39,7 +49,7 @@ public class Mes_Articles extends JFrame {
 		contentPane.add(panel_1);
 		panel_1.setLayout(null);
 		
-		JLabel lblNewLabel_1 = new JLabel("MES ARTICLE DE DON");
+		JLabel lblNewLabel_1 = new JLabel("MES OFFRES D'EMPLOIS");
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_1.setFont(new Font("Open Sans", Font.BOLD, 20));
 		lblNewLabel_1.setBounds(262, 11, 300, 30);
@@ -49,8 +59,10 @@ public class Mes_Articles extends JFrame {
 		edit_icon.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Modifier_Don md = new Modifier_Don((int)table.getModel().getValueAt(table.getSelectedRow(), 0));
-				md.setVisible(true);
+				if(!table.getSelectionModel().isSelectionEmpty()) {
+					Modifier_Job mj = new Modifier_Job((int)table.getModel().getValueAt(table.getSelectedRow(), 0));
+					mj.setVisible(true);
+				}
 			}
 		});
 		edit_icon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -66,9 +78,9 @@ public class Mes_Articles extends JFrame {
 					int opcion = JOptionPane.showConfirmDialog(null, "Es-tu sur de supprimer l'article?", "Confirmation", JOptionPane.YES_NO_OPTION);
 
 					if (opcion == 0) { 
-						Don d = new Don();
-						d.setCode((int)table.getModel().getValueAt(table.getSelectedRow(), 0));
-						d.supprimer_don();
+						Job j = new Job();
+						j.setCode((int)table.getModel().getValueAt(table.getSelectedRow(), 0));
+						j.supprimer_job();
 					}
 				}
 			}
@@ -83,7 +95,7 @@ public class Mes_Articles extends JFrame {
 			    @Override
 			    public Component prepareRenderer(TableCellRenderer renderer, int row, int col) {
 			        Component comp = super.prepareRenderer(renderer, row, col);
-			        Object value = getModel().getValueAt(row, 6);
+			        Object value = getModel().getValueAt(row, 7);
 			        
 			        if (value.equals("actif")) {
 		                comp.setBackground(Color.green);
@@ -108,8 +120,9 @@ public class Mes_Articles extends JFrame {
 		model.addColumn("TITLE");
 		model.addColumn("DESCRIPTION");
 		model.addColumn("DATE CREATION");
-		model.addColumn("CATEGORIE");
 		model.addColumn("WILAYA");
+		model.addColumn("SALAIRE");
+		model.addColumn("DUREE");
 		model.addColumn("ETAT");
 		table.getColumnModel().getColumn(3).setWidth(100);
 		contentPane.add(scrollPane);
@@ -123,20 +136,21 @@ public class Mes_Articles extends JFrame {
 		table.getColumnModel().getColumn(4).setMinWidth(200);
 		table.getColumnModel().getColumn(5).setMinWidth(200);
 		table.getColumnModel().getColumn(6).setMinWidth(100);
+		table.getColumnModel().getColumn(7).setMinWidth(100);
 		
 		oc.initialize();
 
 		try {
-			oc.stmt=oc.con.prepareStatement("Select * From Dons where owner=? order by date_don DESC");
+			oc.stmt=oc.con.prepareStatement("Select * From JObs where owner=? order by date_job DESC");
 			oc.stmt.setString(1, username);
 
 			oc.rs=oc.stmt.executeQuery();
 			while(oc.rs.next()) {
 				SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-				Timestamp sql_date = oc.rs.getTimestamp("date_don");
+				Timestamp sql_date = oc.rs.getTimestamp("date_job");
 				java.util.Date utilDate = new java.util.Date(sql_date.getTime());
 				String dt = formatter.format(utilDate);
-				model.addRow(new Object[]{oc.rs.getInt("code"), oc.rs.getString("title"), oc.rs.getString("description"), dt, oc.rs.getString("categorie"), oc.rs.getString("wilaya"), oc.rs.getString("etat")});
+				model.addRow(new Object[]{oc.rs.getInt("code"), oc.rs.getString("titre"), oc.rs.getString("description"), dt, oc.rs.getString("wilaya"), oc.rs.getString("salaire"), oc.rs.getString("duration"), oc.rs.getString("etat")});
 			}
 			oc.con.close();
 		}catch(Exception e) {
@@ -147,6 +161,6 @@ public class Mes_Articles extends JFrame {
 		
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation(dim.width/2-getSize().width/2, dim.height/2-getSize().height/2);
-		
 	}
+
 }

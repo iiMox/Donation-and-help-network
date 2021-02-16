@@ -13,12 +13,19 @@ public class AccueilOffreContainer extends JPanel {
 		
 		JLabel accueil_offre_1_title = new JLabel(titre);
 		accueil_offre_1_title.setFont(new Font("Open Sans", Font.BOLD, 12));
-		accueil_offre_1_title.setBounds(10, 11, 180, 25);
+		accueil_offre_1_title.setBounds(10, 10, 180, 25);
 		add(accueil_offre_1_title);
 		
-		JLabel accueil_offre_1_desc = new JLabel(description);
+		JTextArea accueil_offre_1_desc = new JTextArea(2, 20);
+		accueil_offre_1_desc.setText(description);
 		accueil_offre_1_desc.setFont(new Font("Open Sans", Font.PLAIN, 12));
 		accueil_offre_1_desc.setBounds(10, 40, 180, 70);
+		accueil_offre_1_desc.setWrapStyleWord(true);
+		accueil_offre_1_desc.setLineWrap(true);
+		accueil_offre_1_desc.setOpaque(false);
+		accueil_offre_1_desc.setEditable(false);
+		accueil_offre_1_desc.setFocusable(false);
+		accueil_offre_1_desc.setBackground(UIManager.getColor("Label.background"));
 		add(accueil_offre_1_desc);
 		
 		JLabel accueil_offre_1_liocation = new JLabel(wilaya);
@@ -30,6 +37,10 @@ public class AccueilOffreContainer extends JPanel {
 		JLabel accueil_offre_1_icon = new JLabel(new ImageIcon(Fenetre_user.class.getResource("/images/location_icon.png")));
 		accueil_offre_1_icon.setBounds(100, 121, 16, 16);
 		add(accueil_offre_1_icon);
+		
+		JPanel panel = new JPanel();
+		panel.setBackground(Color.GRAY);
+		panel.setBounds(9, 37, 181, 1);
+		add(panel);
 	}
-
 }

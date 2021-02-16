@@ -4,6 +4,7 @@ import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
@@ -20,10 +21,16 @@ public class AccueilPosteContainer extends JPanel {
 		accueil_poste_1_title.setBounds(10, 11, 180, 25);
 		add(accueil_poste_1_title);
 		
-		JLabel accueil_poste_1_desc = new JLabel(description);
-		accueil_poste_1_desc.setVerticalAlignment(SwingConstants.TOP);
+		JTextArea accueil_poste_1_desc = new JTextArea();
+		accueil_poste_1_desc.setText(description);
 		accueil_poste_1_desc.setFont(new Font("Open Sans", Font.PLAIN, 12));
 		accueil_poste_1_desc.setBounds(10, 40, 180, 70);
+		accueil_poste_1_desc.setWrapStyleWord(true);
+		accueil_poste_1_desc.setLineWrap(true);
+		accueil_poste_1_desc.setOpaque(false);
+		accueil_poste_1_desc.setEditable(false);
+		accueil_poste_1_desc.setFocusable(false);
+		accueil_poste_1_desc.setBackground(UIManager.getColor("Label.background"));
 		add(accueil_poste_1_desc);
 		
 		JLabel accueil_poste_1_icon = new JLabel(new ImageIcon(Fenetre_user.class.getResource("/images/location_icon.png")));
@@ -36,6 +43,11 @@ public class AccueilPosteContainer extends JPanel {
 		accueil_poste_1_liocation.setFont(new Font("Open Sans", Font.PLAIN, 12));
 		accueil_poste_1_liocation.setBounds(119, 121, 70, 16);
 		add(accueil_poste_1_liocation);
+		
+		JPanel panel = new JPanel();
+		panel.setBackground(Color.GRAY);
+		panel.setBounds(9, 37, 181, 1);
+		add(panel);
 	}
 
 }

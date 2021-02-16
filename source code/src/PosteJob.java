@@ -15,6 +15,24 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
 public class PosteJob extends JPanel {
+	
+	public JLabel owner;
+	
+	public void getTel(String Owner) {
+		OracleConnection oc = new OracleConnection();
+		oc.initialize();
+		try {
+			oc.stmt = oc.con.prepareStatement("Select tel From Users where username = ?");
+			oc.stmt.setString(1, Owner);
+			oc.rs = oc.stmt.executeQuery();
+			if(oc.rs.next()) {
+				owner.setText(Owner+" | 0"+oc.rs.getInt("tel"));
+			}
+			oc.con.close();			
+		} catch(Exception e) {
+			JOptionPane.showMessageDialog(null, "Erreur de connexion à la base de données");
+		}
+	}
 
 	/**
 	 * Create the panel.
@@ -61,9 +79,9 @@ public class PosteJob extends JPanel {
 		wilaya.setBounds(410, 204, 180, 25);
 		add(wilaya);
 		
-		JLabel owner = new JLabel("Username");
+		owner = new JLabel("Username");
 		owner.setFont(new Font("Open Sans", Font.PLAIN, 14));
-		owner.setBounds(10, 54, 125, 15);
+		owner.setBounds(10, 54, 450, 15);
 		add(owner);
 		
 		JSeparator separator = new JSeparator();
@@ -97,10 +115,10 @@ public class PosteJob extends JPanel {
 			while(oc.rs.next()) {
 				title.setText(oc.rs.getString("titre"));
 				desc.setText(oc.rs.getString("description"));
-				owner.setText(oc.rs.getString("owner"));
+				getTel(oc.rs.getString("owner"));
 				wilaya.setText(oc.rs.getString("wilaya"));
-				duration.setText("La durée : " + oc.rs.getInt("duration") + " jrs");
-				salaire.setText("Le salaire : " + oc.rs.getString("salaire") + " DA");
+				duration.setText("La durée : " + oc.rs.getString("duration"));
+				salaire.setText("Le salaire : " + oc.rs.getLong("salaire") + " DA");
 				
 				SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 				Timestamp sql_date = oc.rs.getTimestamp("date_job");

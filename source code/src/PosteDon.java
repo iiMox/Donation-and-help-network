@@ -8,6 +8,24 @@ import javax.swing.border.EmptyBorder;
 
 
 public class PosteDon extends JPanel {
+	
+	public JLabel owner;
+	
+	public void getTel(String Owner) {
+		OracleConnection oc = new OracleConnection();
+		oc.initialize();
+		try {
+			oc.stmt = oc.con.prepareStatement("Select tel From Users where username = ?");
+			oc.stmt.setString(1, Owner);
+			oc.rs = oc.stmt.executeQuery();
+			if(oc.rs.next()) {
+				owner.setText(Owner+" | Tel : 0"+oc.rs.getInt("tel"));
+			}
+			oc.con.close();			
+		} catch(Exception e) {
+			JOptionPane.showMessageDialog(null, "Erreur de connexion à la base de données");
+		}
+	}
 
 	/**
 	 * Create the panel.
@@ -54,9 +72,9 @@ public class PosteDon extends JPanel {
 		wilaya.setBounds(440, 204, 150, 25);
 		add(wilaya);
 		
-		JLabel owner = new JLabel("Username");
+		owner = new JLabel("Username");
 		owner.setFont(new Font("Open Sans", Font.PLAIN, 14));
-		owner.setBounds(10, 54, 125, 15);
+		owner.setBounds(10, 54, 450, 15);
 		add(owner);
 		
 		JSeparator separator = new JSeparator();
@@ -80,7 +98,7 @@ public class PosteDon extends JPanel {
 			oc.rs = oc.stmt.executeQuery();
 			if(oc.rs.next()) {
 				title.setText(oc.rs.getString("title"));
-				owner.setText(oc.rs.getString("owner"));
+				getTel(oc.rs.getString("owner"));
 				desc.setText(oc.rs.getString("description"));
 				categorie.setText(oc.rs.getString("categorie"));
 				wilaya.setText(oc.rs.getString("wilaya"));
@@ -91,8 +109,7 @@ public class PosteDon extends JPanel {
 				String dt = formatter.format(utilDate);
 				date.setText(dt);
 			}
-			
-			oc.con.close();
+			oc.con.close();			
 		} catch(Exception e) {
 			JOptionPane.showMessageDialog(null, "Erreur de connexion à la base de données");
 		}
