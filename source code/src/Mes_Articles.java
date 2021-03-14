@@ -45,6 +45,25 @@ public class Mes_Articles extends JFrame {
 		lblNewLabel_1.setBounds(262, 11, 300, 30);
 		panel_1.add(lblNewLabel_1);
 		
+		JLabel lock_icon = new JLabel(new ImageIcon(Mes_Articles.class.getResource("/images/lock.png")));
+		lock_icon.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int opcion = JOptionPane.showConfirmDialog(null, "Est-ce que vous voulez fermer l'article ?", "Confirmation", JOptionPane.YES_NO_OPTION);
+
+				if (opcion == 0) { //The ISSUE is here
+					Don d = new Don();
+					d.setCode((int)table.getValueAt(table.getSelectedRow(), 0));
+					d.setEtat("Fermer");
+					d.changer_etat();
+				}
+			}
+		});
+		lock_icon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		lock_icon.setLocation(706, 80);
+		lock_icon.setSize(40, 40);
+		contentPane.add(lock_icon);
+		
 		JLabel edit_icon = new JLabel(new ImageIcon(Mes_Offres.class.getResource("/images/pencil (1).png")));
 		edit_icon.addMouseListener(new MouseAdapter() {
 			@Override
@@ -85,10 +104,10 @@ public class Mes_Articles extends JFrame {
 			        Component comp = super.prepareRenderer(renderer, row, col);
 			        Object value = getModel().getValueAt(row, 6);
 			        
-			        if (value.equals("actif")) {
+			        if (value.equals("Actif")) {
 		                comp.setBackground(Color.green);
 		                comp.setForeground(Color.black);
-			        } else if (value.equals("en attend")) {
+			        } else if (value.equals("En attend")) {
 			            comp.setBackground(Color.red);
 			            comp.setForeground(Color.white);
 			        } else {

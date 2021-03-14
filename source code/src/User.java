@@ -236,5 +236,20 @@ public class User {
 		}
 	}
 	
+	public void supprimer_user() {
+		OracleConnection oc = new OracleConnection();
+		oc.initialize();
+		
+		try {
+			oc.stmt=oc.con.prepareStatement("Delete from Users where username=?");
+			oc.stmt.setString(1, username);
+			oc.rs = oc.stmt.executeQuery();
+			JOptionPane.showMessageDialog(null, "Opération a bien effectué ");
+			oc.con.close();
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Erreur de connexion à la base de données");
+		}
+	}
+	
 	
 }

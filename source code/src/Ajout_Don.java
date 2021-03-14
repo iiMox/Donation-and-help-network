@@ -138,8 +138,9 @@ public class Ajout_Don extends JFrame {
 				SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 				java.util.Date utilDate = new Date();
 				String dt = formatter.format(utilDate);
-				Don nv_don = new Don(textField.getText(),textArea.getText(),username,comboBox.getSelectedItem().toString(),comboBox_1.getSelectedItem().toString(),"en attend",dt);
+				Don nv_don = new Don(textField.getText(),textArea.getText(),username,comboBox.getSelectedItem().toString(),comboBox_1.getSelectedItem().toString(),"En attend",dt);
 				nv_don.ajout_don();
+				dispose();
 			}
 		});
 		btnNewButton.setForeground(Color.WHITE);

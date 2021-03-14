@@ -165,29 +165,6 @@ de don / job</panel_attributes>
     <additional_attributes>10.0;20.0;140.0;20.0</additional_attributes>
   </element>
   <element>
-    <id>UMLUseCase</id>
-    <coordinates>
-      <x>944</x>
-      <y>328</y>
-      <w>136</w>
-      <h>48</h>
-    </coordinates>
-    <panel_attributes>Supprimer le profil</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>832</x>
-      <y>288</y>
-      <w>128</w>
-      <h>80</h>
-    </coordinates>
-    <panel_attributes>lt=.&gt;
-&lt;&lt;includes&gt;&gt;</panel_attributes>
-    <additional_attributes>10.0;10.0;140.0;80.0</additional_attributes>
-  </element>
-  <element>
     <id>Relation</id>
     <coordinates>
       <x>1072</x>
@@ -222,18 +199,6 @@ de données</panel_attributes>
     <panel_attributes>lt=.&gt;
 &lt;&lt;includes&gt;&gt;</panel_attributes>
     <additional_attributes>10.0;20.0;90.0;20.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1072</x>
-      <y>304</y>
-      <w>96</w>
-      <h>64</h>
-    </coordinates>
-    <panel_attributes>lt=.&gt;
-&lt;&lt;includes&gt;&gt;</panel_attributes>
-    <additional_attributes>10.0;60.0;100.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLUseCase</id>

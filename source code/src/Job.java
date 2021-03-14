@@ -155,4 +155,20 @@ public class Job {
 			JOptionPane.showMessageDialog(null, "Erreur de connexion à la base de données");
 		}
 	}
+	
+	public void changer_etat() {
+		OracleConnection oc = new OracleConnection();
+		oc.initialize();
+		
+		try {
+			oc.stmt=oc.con.prepareStatement("Update Jobs set etat= ? where code=?");
+			oc.stmt.setString(1, etat);
+			oc.stmt.setInt(2, code);
+			oc.rs = oc.stmt.executeQuery();
+			JOptionPane.showMessageDialog(null, "Opération a bien effectué ");
+			oc.con.close();
+		} catch (SQLException e) {
+			JOptionPane.showMessageDialog(null, "Erreur de connexion à la base de données");
+		}
+	}
 }

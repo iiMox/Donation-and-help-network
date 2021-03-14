@@ -38,7 +38,7 @@ public class Modifier_Don extends JFrame {
 	public Modifier_Don(int code) {
 		OracleConnection oc = new OracleConnection();
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Ajout_Don.class.getResource("/images/login_icon.png")));
-		setTitle("Ajouter un article");
+		setTitle("Modifier un article");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 620, 700);
 		contentPane = new JPanel();

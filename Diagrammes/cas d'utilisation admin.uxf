@@ -73,18 +73,7 @@ halign=left</panel_attributes>
     <id>UMLUseCase</id>
     <coordinates>
       <x>870</x>
-      <y>140</y>
-      <w>150</w>
-      <h>50</h>
-    </coordinates>
-    <panel_attributes>Modifier un user</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLUseCase</id>
-    <coordinates>
-      <x>870</x>
-      <y>210</y>
+      <y>170</y>
       <w>150</w>
       <h>50</h>
     </coordinates>
@@ -95,7 +84,7 @@ halign=left</panel_attributes>
     <id>UMLUseCase</id>
     <coordinates>
       <x>870</x>
-      <y>280</y>
+      <y>260</y>
       <w>150</w>
       <h>50</h>
     </coordinates>
@@ -107,49 +96,25 @@ des users</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>790</x>
-      <y>160</y>
+      <y>180</y>
       <w>100</w>
-      <h>90</h>
+      <h>70</h>
     </coordinates>
     <panel_attributes>lt=.&gt;
 &lt;&lt;includes&gt;&gt;</panel_attributes>
-    <additional_attributes>10.0;70.0;80.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>790</x>
-      <y>210</y>
-      <w>100</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>lt=.&gt;
-&lt;&lt;includes&gt;&gt;</panel_attributes>
-    <additional_attributes>10.0;20.0;80.0;20.0</additional_attributes>
+    <additional_attributes>10.0;50.0;80.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>790</x>
       <y>220</y>
-      <w>130</w>
-      <h>110</h>
-    </coordinates>
-    <panel_attributes>lt=.&gt;
-&lt;&lt;includes&gt;&gt;</panel_attributes>
-    <additional_attributes>10.0;10.0;80.0;90.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1010</x>
-      <y>150</y>
-      <w>90</w>
+      <w>100</w>
       <h>90</h>
     </coordinates>
     <panel_attributes>lt=.&gt;
 &lt;&lt;includes&gt;&gt;</panel_attributes>
-    <additional_attributes>10.0;10.0;70.0;65.0</additional_attributes>
+    <additional_attributes>10.0;10.0;80.0;70.0</additional_attributes>
   </element>
   <element>
     <id>UMLUseCase</id>
@@ -167,13 +132,13 @@ base de données</panel_attributes>
     <id>Relation</id>
     <coordinates>
       <x>1010</x>
-      <y>210</y>
+      <y>180</y>
       <w>90</w>
-      <h>40</h>
+      <h>70</h>
     </coordinates>
     <panel_attributes>lt=.&gt;
 &lt;&lt;includes&gt;&gt;</panel_attributes>
-    <additional_attributes>10.0;20.0;70.0;15.0</additional_attributes>
+    <additional_attributes>10.0;10.0;70.0;45.0</additional_attributes>
   </element>
   <element>
     <id>UMLUseCase</id>

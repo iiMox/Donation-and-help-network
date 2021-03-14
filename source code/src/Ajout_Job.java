@@ -186,8 +186,9 @@ public class Ajout_Job extends JFrame {
 				SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 				java.util.Date utilDate = new Date();
 				String dt = formatter.format(utilDate);
-				Job nv_job = new Job(textField.getText(),textArea.getText(),username,comboBox_1.getSelectedItem().toString(),"en attend",dt,Long.parseLong(textField_salaire.getText()),textField_duree.getText()+" "+comboBox_2.getSelectedItem());
+				Job nv_job = new Job(textField.getText(),textArea.getText(),username,comboBox_1.getSelectedItem().toString(),"En attend",dt,Long.parseLong(textField_salaire.getText()),textField_duree.getText()+" "+comboBox_2.getSelectedItem());
 				nv_job.ajout_job();
+				dispose();
 			}
 		});
 		btnNewButton.setForeground(Color.WHITE);

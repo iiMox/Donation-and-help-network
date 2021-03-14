@@ -14,6 +14,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.event.ActionEvent;
 import javax.swing.border.CompoundBorder;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.WindowFocusListener;
+import java.awt.event.WindowEvent;
 
 public class Fenetre_user extends JFrame {
 
@@ -46,7 +50,7 @@ public class Fenetre_user extends JFrame {
 				stat1_number.setText(String.valueOf(oc.rs.getInt("c1")));
 			}
 			
-			oc.stmt = oc.con.prepareStatement("Select count(*) as c2 from Dons where owner=? and etat ='actif' and date_don<TO_DATE(?,'dd-MM-yyyy HH24:MI') and date_don>TO_DATE(?,'dd-MM-yyyy HH24:MI')");
+			oc.stmt = oc.con.prepareStatement("Select count(*) as c2 from Dons where owner=? and etat ='Actif' and date_don<TO_DATE(?,'dd-MM-yyyy HH24:MI') and date_don>TO_DATE(?,'dd-MM-yyyy HH24:MI')");
 			oc.stmt.setString(1, owner);
 			oc.stmt.setString(2, date1);
 			oc.stmt.setString(3, date2);
@@ -55,7 +59,7 @@ public class Fenetre_user extends JFrame {
 				stat2_number.setText(String.valueOf(oc.rs.getInt("c2")));
 			}
 			
-			oc.stmt = oc.con.prepareStatement("Select count(*) as c3 from Dons where owner=? and etat ='en attend' and date_don<TO_DATE(?,'dd-MM-yyyy HH24:MI') and date_don>TO_DATE(?,'dd-MM-yyyy HH24:MI')");
+			oc.stmt = oc.con.prepareStatement("Select count(*) as c3 from Dons where owner=? and etat ='En attend' and date_don<TO_DATE(?,'dd-MM-yyyy HH24:MI') and date_don>TO_DATE(?,'dd-MM-yyyy HH24:MI')");
 			oc.stmt.setString(1, owner);
 			oc.stmt.setString(2, date1);
 			oc.stmt.setString(3, date2);
@@ -72,7 +76,7 @@ public class Fenetre_user extends JFrame {
 				stat4_number.setText(String.valueOf(oc.rs.getInt("c4")));
 			}
 			
-			oc.stmt = oc.con.prepareStatement("Select count(*) as c5 from jobs where owner=? and etat ='actif' and date_Job<TO_DATE(?,'dd-MM-yyyy HH24:MI') and date_job>TO_DATE(?,'dd-MM-yyyy HH24:MI')");
+			oc.stmt = oc.con.prepareStatement("Select count(*) as c5 from jobs where owner=? and etat ='Actif' and date_Job<TO_DATE(?,'dd-MM-yyyy HH24:MI') and date_job>TO_DATE(?,'dd-MM-yyyy HH24:MI')");
 			oc.stmt.setString(1, owner);
 			oc.stmt.setString(2, date1);
 			oc.stmt.setString(3, date2);
@@ -81,7 +85,7 @@ public class Fenetre_user extends JFrame {
 				stat5_number.setText(String.valueOf(oc.rs.getInt("c5")));
 			}
 			
-			oc.stmt = oc.con.prepareStatement("Select count(*) as c6 from jobs where owner=? and etat ='en attend' and date_Job<TO_DATE(?,'dd-MM-yyyy HH24:MI') and date_job>TO_DATE(?,'dd-MM-yyyy HH24:MI')");
+			oc.stmt = oc.con.prepareStatement("Select count(*) as c6 from jobs where owner=? and etat ='En attend' and date_Job<TO_DATE(?,'dd-MM-yyyy HH24:MI') and date_job>TO_DATE(?,'dd-MM-yyyy HH24:MI')");
 			oc.stmt.setString(1, owner);
 			oc.stmt.setString(2, date1);
 			oc.stmt.setString(3, date2);
@@ -146,7 +150,94 @@ public class Fenetre_user extends JFrame {
 		}
 	}
 	
+	public void actualiserAcceuil() {
+		OracleConnection oc = new OracleConnection();
+		
+		oc.initialize();
+		int nb=0;
+		int x=30;
+		try {
+			oc.stmt = oc.con.prepareStatement("select * from dons where etat='Actif' order by date_don Desc");
+			oc.rs= oc.stmt.executeQuery();
+			while(oc.rs.next() & nb<3) {
+				accueil_container.add(new AccueilPosteContainer(oc.rs.getString("title"),oc.rs.getString("description"),oc.rs.getString("wilaya"),x));
+				nb++;
+				x+=227;
+			}
+			oc.con.close();
+		} catch(Exception e) {
+			JOptionPane.showMessageDialog(null, "Erreur de connexion à la base de données");
+		}
+		
+		oc.initialize();
+		nb=0;
+		x=30;
+		try {
+			oc.stmt = oc.con.prepareStatement("select * from Jobs where etat='Actif' order by date_job Desc");
+			oc.rs= oc.stmt.executeQuery();
+			while(oc.rs.next() & nb<3) {
+				accueil_container.add(new AccueilOffreContainer(oc.rs.getString("titre"),oc.rs.getString("description"),oc.rs.getString("wilaya"),x));
+				nb++;
+				x+=227;
+			}
+			oc.con.close();
+		} catch(Exception e) {
+			JOptionPane.showMessageDialog(null, "Erreur de connexion à la base de données");
+		}
+	}
+	
+	public void actualiserDon() {
+		Vector<Integer> v =new Vector<Integer>();
+		scrollPanel.removeAll();
+		OracleConnection oc = new OracleConnection();
+        oc.initialize();
+        try {
+        	oc.stmt = oc.con.prepareStatement("Select * From Dons Where Etat='Actif'");
+        	oc.rs = oc.stmt.executeQuery();
+        	while(oc.rs.next()) {
+        		v.add(oc.rs.getInt("code"));
+        	}
+        	oc.con.close();
+        } catch(Exception e) {
+        	JOptionPane.showMessageDialog(null, "Erreur de connexion à la base de données");
+        }
+        
+        for(int i=0; i<v.size(); i++) {
+        	scrollPanel.add(new PosteDon(v.get(i)));
+        }
+	}
+	
+	public void actualiserJob() {
+		Vector<Integer> v_jobs =new Vector<Integer>();
+		scrollPanel_jobs.removeAll();
+		OracleConnection oc = new OracleConnection();
+        oc.initialize();
+        try {
+        	oc.stmt = oc.con.prepareStatement("Select * From jobs Where Etat='Actif'");
+        	oc.rs = oc.stmt.executeQuery();
+        	while(oc.rs.next()) {
+        		v_jobs.add(oc.rs.getInt("code"));
+        	}
+        	oc.con.close();
+        } catch(Exception e) {
+        	JOptionPane.showMessageDialog(null, "Erreur de connexion à la base de données");
+        }
+        
+        for(int j=0; j<v_jobs.size(); j++) {
+        	scrollPanel_jobs.add(new PosteJob(v_jobs.get(j)));
+        }
+	}
+	
 	public Fenetre_user(int ID) {
+		addWindowFocusListener(new WindowFocusListener() {
+			public void windowGainedFocus(WindowEvent e) {
+				actualiserAcceuil();
+				actualiserDon();
+				actualiserJob();
+			}
+			public void windowLostFocus(WindowEvent e) {
+			}
+		});
 		User user = new User();
 		user.getUserById(ID);
 		
@@ -218,6 +309,7 @@ public class Fenetre_user extends JFrame {
 				profil_container.setVisible(false);
 				scrollPane.setVisible(false);
 				scrollPane_jobs.setVisible(false);
+				actualiserAcceuil();
 			}
 		});
 		panel_accueil.setBackground(new Color(29, 191, 115, 0));
@@ -268,6 +360,7 @@ public class Fenetre_user extends JFrame {
 				profil_container.setVisible(false);
 				scrollPane.setVisible(true);
 				scrollPane_jobs.setVisible(false);
+				actualiserDon();
 			}
 		});
 		
@@ -313,6 +406,7 @@ public class Fenetre_user extends JFrame {
 				profil_container.setVisible(false);
 				scrollPane.setVisible(false);
 				scrollPane_jobs.setVisible(true);
+				actualiserJob();
 			}
 		});
 		
@@ -560,22 +654,7 @@ public class Fenetre_user extends JFrame {
 		accueil_separator_1.setBounds(30, 170, 654, 2);
 		accueil_container.add(accueil_separator_1);
 		
-		OracleConnection oc = new OracleConnection();
-		oc.initialize();
-		int nb=0;
-		int x=30;
-		try {
-			oc.stmt = oc.con.prepareStatement("select * from dons order by date_don Desc");
-			oc.rs= oc.stmt.executeQuery();
-			while(oc.rs.next() & nb<3) {
-				accueil_container.add(new AccueilPosteContainer(oc.rs.getString("title"),oc.rs.getString("description"),oc.rs.getString("wilaya"),x));
-				nb++;
-				x+=227;
-			}
-			oc.con.close();
-		} catch(Exception e) {
-			JOptionPane.showMessageDialog(null, "Erreur de connexion à la base de données");
-		}
+		actualiserAcceuil();
 		
 		JLabel accueil_lblNewLabel_9 = new JLabel("Offres r\u00E9cents");
 		accueil_lblNewLabel_9.setFont(new Font("Open Sans", Font.BOLD, 20));
@@ -587,22 +666,6 @@ public class Fenetre_user extends JFrame {
 		accueil_separator_2.setBackground(Color.WHITE);
 		accueil_separator_2.setBounds(30, 430, 654, 2);
 		accueil_container.add(accueil_separator_2);
-		
-		oc.initialize();
-		nb=0;
-		x=30;
-		try {
-			oc.stmt = oc.con.prepareStatement("select * from Jobs order by date_job Desc");
-			oc.rs= oc.stmt.executeQuery();
-			while(oc.rs.next() & nb<3) {
-				accueil_container.add(new AccueilOffreContainer(oc.rs.getString("titre"),oc.rs.getString("description"),oc.rs.getString("wilaya"),x));
-				nb++;
-				x+=227;
-			}
-			oc.con.close();
-		} catch(Exception e) {
-			JOptionPane.showMessageDialog(null, "Erreur de connexion à la base de données");
-		}
 		
 		JButton accueil_postes_voirplus = new JButton("Voir plus ..");
 		accueil_postes_voirplus.addMouseListener(new MouseAdapter() {
@@ -688,25 +751,7 @@ public class Fenetre_user extends JFrame {
         scrollPane.setVisible(false);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setSize(654, 500);
-        scrollPane.setLocation(30, 150);
-        
-        Vector<Integer> v =new Vector<Integer>();
-        oc.initialize();
-        try {
-        	oc.stmt = oc.con.prepareStatement("Select * From Dons Where Etat='actif'");
-        	oc.rs = oc.stmt.executeQuery();
-        	while(oc.rs.next()) {
-        		v.add(oc.rs.getInt("code"));
-        	}
-        	oc.con.close();
-        } catch(Exception e) {
-        	JOptionPane.showMessageDialog(null, "Erreur de connexion à la base de données");
-        }
-        
-        for(int i=0; i<v.size(); i++) {
-        	scrollPanel.add(new PosteDon(v.get(i)));
-        }
-        
+        scrollPane.setLocation(30, 150);        
         dons_container.add(scrollPane);
         
         JButton mes_demandes_btn = new JButton("Mes postes des dons");
@@ -774,24 +819,7 @@ public class Fenetre_user extends JFrame {
         scrollPane_jobs.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane_jobs.setSize(654, 500);
         scrollPane_jobs.setLocation(30, 150);
-        
-        Vector<Integer> v_jobs =new Vector<Integer>();
-        oc.initialize();
-        try {
-        	oc.stmt = oc.con.prepareStatement("Select * From jobs Where Etat='actif'");
-        	oc.rs = oc.stmt.executeQuery();
-        	while(oc.rs.next()) {
-        		v_jobs.add(oc.rs.getInt("code"));
-        	}
-        	oc.con.close();
-        } catch(Exception e) {
-        	JOptionPane.showMessageDialog(null, "Erreur de connexion à la base de données");
-        }
-        
-        for(int j=0; j<v_jobs.size(); j++) {
-        	scrollPanel_jobs.add(new PosteJob(v_jobs.get(j)));
-        }
-        
+               
         jobs_container.add(scrollPane_jobs);
         
         JButton mes_offres_btn = new JButton("Mes offres d'emploi");
@@ -1120,7 +1148,7 @@ public class Fenetre_user extends JFrame {
 		profil_panel_4.add(profil_username);
 		profil_username.setText(user.getUsername());
 		
-		JLabel lblNewLabel_8_3 = new JLabel("E-amil");
+		JLabel lblNewLabel_8_3 = new JLabel("E-mail");
 		lblNewLabel_8_3.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNewLabel_8_3.setFont(new Font("Open Sans", Font.BOLD, 20));
 		lblNewLabel_8_3.setBounds(94, 192, 170, 40);
